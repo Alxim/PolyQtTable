@@ -123,6 +123,7 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PolyQtTable.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PolyQtTable.cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <ClCompile Include="PolyNcEditorReactor.cpp" />
     <ClCompile Include="PolyQtTable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -218,10 +219,23 @@
     <ClCompile Include="PrimitiveAbstract.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="PropertyValueCoordinates.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\PropertyValueCoordinates.h -o "$(IntDir)\moc_PropertyValueCoordinates.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC PropertyValueCoordinates.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_PropertyValueCoordinates.cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\PropertyValueCoordinates.h -o "$(IntDir)\moc_PropertyValueCoordinates.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PropertyValueCoordinates.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PropertyValueCoordinates.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClCompile Include="PropertyValueCoordinates.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PolyNcEditorReactor.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HelloQt.cpp" />
+    <ClCompile Include="Reactor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">Create</PrecompiledHeader>
@@ -246,13 +260,16 @@
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueInt.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
-	<ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PrimitiveAbstract.cpp">
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PrimitiveAbstract.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PrimitivePolyLine.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableDelegat.cpp">
+      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueCoordinates.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemGroup>

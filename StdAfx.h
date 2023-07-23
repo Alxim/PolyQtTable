@@ -17,7 +17,6 @@
 // указанными выше. 
 //
 
-#ifndef QT_PROJECT
 
 #pragma once
 
@@ -91,4 +90,3 @@ using namespace ATL ;
 #undef _DEBUG_WAS_DEFINED
 #endif
 
-#endif

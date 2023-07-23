@@ -49,5 +49,7 @@ private:
   QVector<PropertyAbstact*> prop_vector;
   QVector<PrimitivePolyLine*> primitives;
 
+  PrimitivePolyLine* _primitiv;
+
   void clipboarsPaste();
 };

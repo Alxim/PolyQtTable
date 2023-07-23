@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
+    <width>369</width>
     <height>670</height>
    </rect>
   </property>
@@ -16,11 +16,11 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="0">
-      <widget class="QTableView" name="tableView"/>
-     </item>
      <item row="0" column="0">
       <widget class="QComboBox" name="comboBox"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTableView" name="tableView"/>
      </item>
      <item row="2" column="0">
       <widget class="QPushButton" name="create">

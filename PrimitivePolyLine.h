@@ -21,6 +21,9 @@ public:
 
     QString className() override;
 
+    bool create() override;
+
+    bool pasteClipboars(QModelIndex index) override;
 
 public slots:
     void resizeVector();
@@ -30,4 +33,6 @@ private:
     QVector<PropertyAbstact*>* _prop_vector = nullptr;
     PropertyValueInt* _vertex_count = nullptr;
     PolyQtTableModel * _model = nullptr;
+
+    const int _point_start_index = 4;
 };

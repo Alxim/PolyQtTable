@@ -18,4 +18,8 @@ public:
 
     virtual QString className();
 
+    virtual bool create() = 0;
+
+    virtual bool pasteClipboars(QModelIndex index) = 0;
+
 };

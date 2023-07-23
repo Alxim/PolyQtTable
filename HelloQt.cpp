@@ -28,25 +28,6 @@ extern "C" __declspec(dllexport) bool showDialog(HWND parent)
   auto win = new QWinWidget(parent);
   win->showCentered();
 
-//  IMc3dSolid* detail = IMc3dSolid();
-  /*
-  IDispatch* pNanoDisp;
-  IAcadApplication* pAcad;
-  IAcadDocument* pDoc;
-  IAcadModelSpace* pMSpace;
-  IAcadCircle* pCircle;
-  VARIANT  poi;
-  double   drad;
-
-  pNanoDisp = acedGetIDispatch(TRUE);
-  if (pNanoDisp == NULL) return;
-  hr = pNanoDisp->QueryInterface(IID_IAcadApplication, (void**)&pAcad);
-  pNanoDisp->Release();
-
-
-  pMSpace->AddCircle(poi, drad, &pCircle);
-  pMSpace->Release();
-  */
   QMessageBox::about(win, "HelloQt.dll", "Hello, Qt in nanoCAD!");
 
   delete win;
@@ -99,7 +80,7 @@ void polyQtTablePaletteCmd()
   {
     CAcModuleResourceOverride ThisRes;
     m_pPalSet = new hostUiPaletteSet();
-    m_pPalSet->Create(L"Test Qt Palette Set", WS_CHILD | WS_DLGFRAME | WS_VISIBLE, CRect(30, 50, 270, 300),
+    m_pPalSet->Create(L"Test Qt Palette Set", WS_CHILD | WS_DLGFRAME | WS_VISIBLE, CRect(30, 50, 870, 300),
       CWnd::FromHandle(adsw_acadMainWnd()), PSS_SNAP | PSS_PROPERTIES_MENU | PSS_AUTO_ROLLUP | PSS_CLOSE_BUTTON);
     m_pPalSet->EnableDocking(CBRS_ALIGN_ANY);
     m_pPalSet->RestoreControlBar();
@@ -161,6 +142,10 @@ void uninitApp()
   }
 }
 
+
+void clearReactors();
+void watchDb();
+
 extern "C" __declspec(dllexport) AcRx::AppRetCode
 acrxEntryPoint(AcRx::AppMsgCode msg, void* appId) 
 {
@@ -170,10 +155,30 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
     acrxDynamicLinker->unlockApplication(appId);
     acrxDynamicLinker->registerAppMDIAware(appId);
     initApp();
+    watchDb();
+    //  Пример добавленрия реактора
+
+    //acrxDynamicLinker->unlockApplication(appId);
+    //acrxDynamicLinker->registerAppNotMDIAware(appId);
+    //acedRegCmds->addCommand("ASDK_NOTIFY_TEST",
+    //    "ASDK_WATCH",
+    //    "WATCH",
+    //    ACRX_CMD_TRANSPARENT,
+    //    watchDb);
+    //acedRegCmds->addCommand("ASDK_NOTIFY_TEST",
+    //    "ASDK_CLEAR",
+    //    "CLEAR",
+    //    ACRX_CMD_TRANSPARENT,
+    //    clearReactors);
     break;
 
   case AcRx::kUnloadAppMsg:
     uninitApp();
+
+    //  Пример добавленрия реактора
+
+    clearReactors();
+    //acedRegCmds->removeGroup("ASDK_NOTIFY_TEST");
     break;
   }
 
