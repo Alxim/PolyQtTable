@@ -146,16 +146,24 @@ void uninitApp()
 void clearReactors();
 void watchDb();
 
+
+void createNcEditorReactor();
+void clearNcEditorReactor();
+
 extern "C" __declspec(dllexport) AcRx::AppRetCode
 acrxEntryPoint(AcRx::AppMsgCode msg, void* appId) 
 {
   switch (msg) 
   {
   case AcRx::kInitAppMsg:
+      //  Действия при установке плагина
+
     acrxDynamicLinker->unlockApplication(appId);
     acrxDynamicLinker->registerAppMDIAware(appId);
     initApp();
-    watchDb();
+    //watchDb();    
+    createNcEditorReactor();
+
     //  Пример добавленрия реактора
 
     //acrxDynamicLinker->unlockApplication(appId);
@@ -173,11 +181,15 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
     break;
 
   case AcRx::kUnloadAppMsg:
+      // Действия при выгрузке плагина
     uninitApp();
 
-    //  Пример добавленрия реактора
+    //  Пример удаления реактора
 
-    clearReactors();
+    //clearReactors();
+    clearNcEditorReactor();
+
+
     //acedRegCmds->removeGroup("ASDK_NOTIFY_TEST");
     break;
   }

@@ -235,7 +235,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HelloQt.cpp" />
-    <ClCompile Include="Reactor.cpp" />
+    <ClCompile Include="ReactorDb.cpp" />
+    <ClCompile Include="ReactorEditor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">Create</PrecompiledHeader>

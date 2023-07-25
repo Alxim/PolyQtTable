@@ -5,15 +5,18 @@
 #include "PolyQtTable.h"
 
 
-class AsdkDbReactor;
+class NsdkDbReactor;
 long gEntAcc = 0;            // Global entity count
-AsdkDbReactor* gpDbr = NULL; // Pointer to database reactor
-// Custom AcDbDatabaseReactor class for database
+NsdkDbReactor* gpDbr = NULL; // Pointer to database reactor
+// Custom NcEditorReactor class for database
 // event notification.
-//
+//  C++
+// class NcEditorReactor : public NcRxEventReactor;
+
+//  NcEditor virtual void addReactor(NcRxEventReactor* reactor);
 void printDbEvent(const AcDbObject* pObj, const char* pEvent);
 
-class AsdkDbReactor : public AcDbDatabaseReactor
+class NsdkDbReactor : public NcDbDatabaseReactor
 {
 public:
     virtual void objectAppended(const AcDbDatabase* dwg, const AcDbObject* dbObj);
@@ -23,7 +26,7 @@ public:
 };
 // Called whenever an object is added to the database.
 //
-void AsdkDbReactor::objectAppended(const AcDbDatabase* db, const AcDbObject* pObj)
+void NsdkDbReactor::objectAppended(const AcDbDatabase* db, const AcDbObject* pObj)
 {
     printDbEvent(pObj, "objectAppended");
     acutPrintf (L" Db==%lx\n", (long)db);
@@ -34,7 +37,7 @@ void AsdkDbReactor::objectAppended(const AcDbDatabase* db, const AcDbObject* pOb
 
 // Called whenever an object in the database is modified.
 //
-void AsdkDbReactor::objectModified(const AcDbDatabase* db, const AcDbObject* pObj)
+void NsdkDbReactor::objectModified(const AcDbDatabase* db, const AcDbObject* pObj)
 {
     printDbEvent(pObj, "objectModified");
     acutPrintf(L" Db==%lx\n", (long)db);
@@ -42,7 +45,7 @@ void AsdkDbReactor::objectModified(const AcDbDatabase* db, const AcDbObject* pOb
 
 // Called whenever an object is erased from the database.
 //
-void AsdkDbReactor::objectErased(const AcDbDatabase* db,
+void NsdkDbReactor::objectErased(const AcDbDatabase* db,
     const AcDbObject* pObj, Adesk::Boolean pErased)
 {
     if (pErased) {
@@ -70,7 +73,7 @@ void printObj(const AcDbObject* pObj)
     char  handbuf[17];
     // Gets the handle as a string.
     //
-    pObj->getAcDbHandle(objHand);
+    //pObj->getAcDbHandle(objHand);
     //objHand.getIntoAsciiBuffer(handbuf);
     acutPrintf(
         L"\n   (class==%s, handle==%s, id==%lx, db==%lx)",
@@ -85,7 +88,7 @@ void printObj(const AcDbObject* pObj)
 
 void printDbEvent(const AcDbObject* pObj, const char* pEvent)
 {
-    acutPrintf(L"  Event: AcDbDatabaseReactor::%s ", pEvent);
+    acutPrintf(L"  Event: NcEditorReactor::%s ", pEvent);
     printObj(pObj);
 }
 
@@ -100,9 +103,11 @@ void printDbEvent(const AcDbObject* pObj, const char* pEvent)
 void watchDb()
 {
     if (gpDbr == NULL) {
-        gpDbr = new AsdkDbReactor();
+        gpDbr = new NsdkDbReactor();
     }
-    acdbHostApplicationServices()->workingDatabase()->addReactor(gpDbr);
+    ncdbHostApplicationServices()->workingDatabase()->addReactor(gpDbr);
+
+
     acutPrintf(
         L"  Added Database Reactor to "
         "acdbHostApplicationServices()->workingDatabase().\n");

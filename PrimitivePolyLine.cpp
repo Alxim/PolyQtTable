@@ -138,7 +138,7 @@ bool PrimitivePolyLine::create()
 	ncdbHostApplicationServices()->workingDatabase()->getSymbolTable(pBlockTable, NcDb::kForRead);
 
 
-	PolyNcEditorReactor* reactor = new PolyNcEditorReactor();
+	//PolyNcEditorReactor* reactor = new PolyNcEditorReactor();
 	NcDbObjectReactor* reactor_obj = new NcDbObjectReactor();
 	
 
