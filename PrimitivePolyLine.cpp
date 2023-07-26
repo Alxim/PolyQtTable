@@ -54,7 +54,14 @@ void PrimitivePolyLine::resizeVector()
 	{
 		for (int i = curr_count; i < new_count; i++)
 		{
-			_prop_vector->append(new PropertyValueCoordinates(QString("Вершина %1").arg(i - _point_start_index + 1), "0 0 0"));
+			//double x = cos(3 * i) + i, y = sin(3 * i) + i, z = exp(double(i) / 10);
+			double x = (pow(2, i)* (i%2) + i ) * 1000, 
+				y = (pow(2, i) * ((i+1) % 2) + i) * 1000, 
+				z = pow(2, i) * 1000;
+			_prop_vector->append(new PropertyValueCoordinates(
+				QString("Вершина %1").arg(i - _point_start_index + 1), 
+				QString("%1 %2 %3").arg(x).arg(y).arg(z)
+			));
 			if (_model != nullptr)
 				_model->insertRows(_model->rowCount(), 1);
 		}
@@ -96,7 +103,7 @@ bool PrimitivePolyLine::create()
 
 	for (int i = _point_start_index; i < count; i++)
 	{
-		double x = 0, y = 0, z = 0;
+		double x = cos(3 * i) + i, y = sin (3 * i) + i, z = exp(double(i)/10);
 
 		QString value = _prop_vector->at(i)->value().toString();
 		QStringList lst = value.split(" ");

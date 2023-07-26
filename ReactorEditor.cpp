@@ -66,8 +66,6 @@ void PolyNcEditorReactor::pickfirstModified()
 		acutPrintf(TEXT("\nNames of Entities: %s"), objId);
 		if (objId == NULL)
 			acutPrintf(TEXT("\nobjId is NULL"));
-		else
-			acutPrintf(TEXT("\nobjId is NOT NULL"));
 
 		// Получить указатель на текущий элемент
 		AcDbEntity* pEnt;
@@ -86,6 +84,49 @@ void PolyNcEditorReactor::pickfirstModified()
 		if (str == "AcDb3dPolyline") 
 		{
 			acutPrintf(TEXT("\nУспех!!!"));
+
+			AcDb3dPolyline* line = static_cast <AcDb3dPolyline*> (pEnt);
+
+
+			//NcDbObjectIterator* it = line->vertexIterator();
+
+			//NcDbObjectIterator* pVertIter = line->vertexIterator();
+			//line->close();
+
+			NcGePoint3dArray gripPoints;
+			NcDbIntArray osnapModes;
+			NcDbIntArray geomIds;
+
+			//NcDbObjectId vertexObjId = pVertIter->objectId();
+
+			line->getGripPoints(gripPoints, osnapModes, geomIds);
+
+			for (int j = 0; j < gripPoints.size(); j++)
+			{
+					//acutPrintf(
+					//	TEXT("\nТочка %s : (x = %s, y = %s, z = %s)"),
+					//	std::to_string(j), std::to_string(gripPoints[j].x),
+					//	std::to_string(gripPoints[j].y),
+					//	std::to_string(gripPoints[j].z)
+					//);
+
+				acutPrintf(
+					TEXT("\nТочка %d : (x = %d, y = %d, z = %d)"),
+					j, gripPoints[j].x,
+					gripPoints[j].y,
+					gripPoints[j].z
+				);
+			}
+
+
+//				AcDb3dVertex* pVertex = NULL;
+//				acdbOpenObject(pVertex, vertexObjId, AcDb::kForRead);
+
+				//AcGePoint3d location = pVertex->position();
+				//pVertex->close();
+
+			
+			//delete pVertIter;
 		}
 		else
 			acutPrintf(TEXT( "%s"), str);

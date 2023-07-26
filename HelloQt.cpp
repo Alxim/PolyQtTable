@@ -59,7 +59,7 @@ public:
     if (m_pWinWidget)
     {
       HWND wnd = (HWND)m_pWinWidget->windowHandle()->winId();
-      ::SetWindowPos(wnd, nullptr, 0, 0, cx, cy, SWP_NOZORDER);
+      ::SetWindowPos(wnd, nullptr, 0, 0, cx, cy*2, SWP_NOZORDER);
     }
   }
 

@@ -59,11 +59,7 @@ void PolyQtTableWidget::showDialog()
 	_primitiv->create();
 	/**/
 
-	acutPrintf(L"\nHello, NRX!\n");
-	QString str = "Test";
-	QMessageBox::about(this, "QMessageBox",
-		QString("Hello, this is %1 signals and slots!").arg(str)
-	);
+	acutPrintf(L"\nCreate 3Dpolyline\n");
 }
 
 void PolyQtTableWidget::on_create_clicked()
