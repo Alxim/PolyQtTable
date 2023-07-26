@@ -30,29 +30,22 @@ void PolyNcEditorReactor::pickfirstModified()
 	acedSSGet(TEXT("_I"), NULL, NULL, NULL, sset);
 	long length;
 	acedSSLength(sset, (Adesk::Int32*)&length);
-	acutPrintf(TEXT("\nNumber of Entities: %d"), length);
-
-	acutPrintf(TEXT("\nNames of select: %s"), sset);
 
 	if(sset == NULL)
 		acutPrintf(TEXT("\nsset is NULL"));
-	else
-		acutPrintf(TEXT("\nsset is NOT NULL"));
 	
+	acutPrintf( TEXT( "\n\nКоличество выделенных объектов:% d" ), length );
+
 	for (long i = 0; i < length; i++)
 	{
 		acutPrintf(TEXT("\n\nNumber of names:% d"), i);
 
 		acedSSName(sset, i, ename);
-		
 		AcDbObjectId objId;
 		
 		acutPrintf(TEXT("\nNames of Entities: %s"), ename);
 		if(ename == NULL)
 			acutPrintf(TEXT("\nename is NULL") );
-		else
-			acutPrintf(TEXT("\nename is NOT NULL"));
-
 
 		// Вычисление ID для перехода от ads_name к AcDbObjectId
 		int result = acdbGetObjectId(objId, ename);
@@ -65,7 +58,10 @@ void PolyNcEditorReactor::pickfirstModified()
 
 		acutPrintf(TEXT("\nNames of Entities: %s"), objId);
 		if (objId == NULL)
+		{
 			acutPrintf(TEXT("\nobjId is NULL"));
+			continue;
+		}
 
 		// Получить указатель на текущий элемент
 		AcDbEntity* pEnt;
@@ -78,62 +74,167 @@ void PolyNcEditorReactor::pickfirstModified()
 		}
 
 		printObj(pEnt);
+		
 
 		std::string str = CT2A( pEnt->isA()->name() ); 
 
 		if (str == "AcDb3dPolyline") 
 		{
+
 			acutPrintf(TEXT("\nУспех!!!"));
 
-			AcDb3dPolyline* line = static_cast <AcDb3dPolyline*> (pEnt);
+
+			//AcDbBlockReference* pInsert;
+			Acad::ErrorStatus es;
+
+			// Проверяем тип примитива.
+			acdbGetObjectId(objId, ename);
+			if (Acad::eOk != (es = acdbOpenAcDbEntity(pEnt,
+				objId,
+				AcDb::kForRead)))
+			{
+				acutPrintf(L"\nНельзя получить доступ к примитиву.\n");
+				return;
+			}
+
+			acutPrintf(
+				L"  acdbGetObjectId\n");
+
+			//pInsert = AcDbBlockReference::cast(pEnt);
+			//if (!pInsert)
+			//{
+			//	acutPrintf(L"\nВыбрали не вставку блока.\n");
+			//	pEnt->close();
+			//	return;
+			//}
+
+			// Получаем objectID определения блока.
+			AcDbObjectId blockDefId = pEnt->blockId();
+				//pInsert->blockTableRecord();
+
+			// Закрываем вставку блока.
+			// pInsert->close();
+
+			// Открываем определение блока.
+			//AcDbBlockTableRecord* pBlkRecord;
+			//if (Acad::eOk != (es = acdbOpenObject(pBlkRecord,
+			//	blockDefId,
+			//	AcDb::kForRead)))
+			//{
+			//	acutPrintf(L"\nНельзя получить доступ к определению блока.\n");
+			//	return;
+			//}
+
+			//// Получаем имя определения блока.
+			//const TCHAR* pBlkName;
+			//es = pBlkRecord->getName(pBlkName);
+
+			//AcDbBlockTableRecordIterator* pIterator = NULL;
+			//pBlkRecord->newIterator(pIterator);
+
+			//for (pIterator->start(); !pIterator->done(); pIterator->step())
+			//{
+			//	AcDbObjectId idEnt;
+			//	pIterator->getEntityId(idEnt);
+			//	AcDbObjectPointer<AcDbEntity> pEnt1(idEnt, AcDb::kForRead);
+			//	if (pEnt1.openStatus() == Acad::eOk)
+			//	{
+			//		// Получаем свойства примитива в блоке (слой, цвет, типлинии и т.д.)
+			//		pEnt1->
+			//	}
+			//}
+			//delete pIterator;
+
+			//pBlkRecord->close();
+			//if ((Acad::eOk != es) || !pBlkName)
+			//{
+			//	acutPrintf(L"\nНе можем получить имя блока.\n");
+			//	return;
+			//}
+
+			//acutPrintf(L"\nИмя блока: '%s'\n", pBlkName);
 
 
-			//NcDbObjectIterator* it = line->vertexIterator();
+			//return;
 
-			//NcDbObjectIterator* pVertIter = line->vertexIterator();
-			//line->close();
+
+			AcDb3dPolyline* p_line = static_cast <AcDb3dPolyline*> (pEnt);
 
 			NcGePoint3dArray gripPoints;
 			NcDbIntArray osnapModes;
 			NcDbIntArray geomIds;
 
-			//NcDbObjectId vertexObjId = pVertIter->objectId();
+			p_line->getGripPoints(gripPoints, osnapModes, geomIds);
 
-			line->getGripPoints(gripPoints, osnapModes, geomIds);
 
 			for (int j = 0; j < gripPoints.size(); j++)
 			{
-					//acutPrintf(
-					//	TEXT("\nТочка %s : (x = %s, y = %s, z = %s)"),
-					//	std::to_string(j), std::to_string(gripPoints[j].x),
-					//	std::to_string(gripPoints[j].y),
-					//	std::to_string(gripPoints[j].z)
-					//);
+				NcGePoint3d point = gripPoints.at(j);
+				
+				ACHAR val_x[50], val_y[50], val_z[50];
+				acdbRToS(point.x, -1, 5, val_x);
+				acdbRToS(point.y, -1, 5, val_y);
+				acdbRToS(point.z, -1, 5, val_z);
 
 				acutPrintf(
-					TEXT("\nТочка %d : (x = %d, y = %d, z = %d)"),
-					j, gripPoints[j].x,
-					gripPoints[j].y,
-					gripPoints[j].z
+					TEXT("\nТочка %d : (x = %s, y = %s, z = %s)"),
+					j, val_x,
+					val_y,
+					val_z
 				);
+
 			}
 
+			double test = 3.5;
+			double number = 5.66;
 
-//				AcDb3dVertex* pVertex = NULL;
-//				acdbOpenObject(pVertex, vertexObjId, AcDb::kForRead);
+			acutPrintf(TEXT("\n%.6q0"), number);
+			acutPrintf(TEXT("\n%.10q*"), test);
 
-				//AcGePoint3d location = pVertex->position();
-				//pVertex->close();
+			QString str = QString::number(test) + "    " + QString::number(number);
 
-			
-			//delete pVertIter;
+			acutPrintf(TEXT("\n%s"), str.toStdString());
+
+			ACHAR valStr[50];
+			//-1 использует текущие единицы базы данных чертежа
+			int unit = -1;
+			// точность – 5 знаков после запятой
+			int prec = 5;
+			acdbRToS(15.20024, unit, prec, valStr);
+
+			acutPrintf(_T("плавающее: %s\n"), valStr);
+			// Для научного используем 1
+			unit = 1;
+			acdbRToS(15.20024, unit, prec, valStr);
+			acutPrintf(_T("Научное : %s\n"), valStr);
+
+			// Для десятичного представления используем 2
+			unit = 2;
+			acdbRToS(15.20024, unit, prec, valStr);
+			acutPrintf(_T("Десятичное  : %s\n"), valStr);
+
+			// Для инженерного используем 3
+			unit = 3;
+			acdbRToS(15.20024, unit, prec, valStr);
+			acutPrintf(_T("Инженерное : %s\n"), valStr);
+
+			// Для архитектурного используем 4
+			unit = 4;
+			acdbRToS(15.20024, unit, prec, valStr);
+			acutPrintf(_T("Архитектурное : %s\n"), valStr);
+
+			// Для дробного используем 5
+			unit = 5;
+			acdbRToS(15.20024, unit, prec, valStr);
+			acutPrintf(_T("Дробное : %s\n"), valStr);
+
 		}
 		else
-			acutPrintf(TEXT( "%s"), str);
+			acutPrintf(TEXT("%s"), str);
 
 
 		acutPrintf(TEXT("\nTest 10"));
-		
+
 	}
 
 	acutPrintf(TEXT("\nEnd for..."));
@@ -213,33 +314,6 @@ void PolyNcEditorReactor::pickfirstModified()
 
 	//return;
 
-
-	//NcDbObjectIdArray arr;
-	//int err = ncedGetCurrentSelectionSet(arr);
-
-	//acutPrintf(L"  err::%d ", err);
-
-	//if (err != Nano::eOk)
-	//	return;
-
-	//if (arr == NULL)
-	//{
-	//	acutPrintf(L"  NULL ");
-	//	return;
-	//}
-
-	//int _size = arr.size();
-
-	//acutPrintf(L"  err::%d ", _size );
-	//return;
-
-	//nds_name sset;
-	//err = acedSSGet(_T("_I"), NULL, NULL, NULL, sset);
-	//if (err != RTNORM)
-	//	return;
-
-	//acutPrintf(L"  err::%d ", err);
-	//acutPrintf(L"  sset::%d ", sset[0]);
 
 	return;
 	

@@ -92,11 +92,6 @@ bool PrimitivePolyLine::create()
 #ifndef QT_PROJECT
 	// polyline creation 
 	NcGePoint3dArray ptArr;
-	//for (int i = 0; i < 4; i++)
-	//{
-	//    ptArr[i].set((double)(i / 2), (double)(i % 2), 0.0);
-	//}
-	//NcDb2dPolyline* pNewPline = new NcDb2dPolyline(NcDb::k2dSimplePoly, ptArr, 0.0, NRX::kTrue);
 
 	int count = _prop_vector->count();
 	ptArr.setLogicalLength(count - _point_start_index + 1);
@@ -129,7 +124,6 @@ bool PrimitivePolyLine::create()
 
 	pNewPline->setColorIndex(3);
 
-
 	//polygon mesh constructor without any parameter
 	NcDbPolygonMesh* pMesh = new NcDbPolygonMesh();
 	pMesh->setMSize(1);
@@ -149,7 +143,6 @@ bool PrimitivePolyLine::create()
 	NcDbObjectReactor* reactor_obj = new NcDbObjectReactor();
 	
 
-
 	//  NcDb::kForRead - Замыкать фигуру, если не ставить, то будет разорванная
 
 	NcDbBlockTableRecord* pBlockTableRecord;
@@ -165,6 +158,7 @@ bool PrimitivePolyLine::create()
 	NcDb3dPolylineVertex* pVertex;
 	NcGePoint3d location;
 	NcDbObjectId vertexObjId;
+
 	for (int vertexNumber = 0; !pVertIter->done();
 		vertexNumber++, pVertIter->step())
 	{
