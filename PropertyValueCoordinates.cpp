@@ -38,7 +38,7 @@ bool PropertyValueCoordinates::setValue(QVariant value)
 }
 
 
-QRegExp PropertyValueCoordinates::regExp()
+QRegExp PropertyValueCoordinates::regExpToValidation()
 {
     return _reg_exp;
 }

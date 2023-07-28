@@ -121,7 +121,7 @@ bool PolyQtTableModel::removeRows(int row, int count, const QModelIndex& index)
     return true;
 }
 
-QRegExp PolyQtTableModel::regExp(const QModelIndex &index) const
+QRegExp PolyQtTableModel::regExpToValidation(const QModelIndex &index) const
 {
-    return _prop_vector->at(index.row())->regExp();
+    return _prop_vector->at(index.row())->regExpToValidation();
 }

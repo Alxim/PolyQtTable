@@ -26,6 +26,9 @@
 #include "PrimitiveAbstract.h"
 #include "ui_PolyQtTable.h"
 
+
+class PropertyAbstact;
+
 class PolyQtTableWidget : public QWidget
 {
   Q_OBJECT
@@ -46,8 +49,8 @@ private:
 
   PolyQtTableModel* model = nullptr;
 
+
   QVector<PropertyAbstact*> prop_vector;
-  QVector<PrimitivePolyLine*> primitives;
 
   PrimitivePolyLine* _primitiv;
 

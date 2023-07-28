@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "PolyQtTable.h"
 #include "PrimitivePolyLine.h"
+#include "PropertyAbstact.h"
 
 #include <qdebug.h>
 #include <QMessageBox>
@@ -33,8 +34,7 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 	QObject::connect(ui.create, SIGNAL(clicked()), this, SLOT(showDialog()));
 
 	_primitiv = new PrimitivePolyLine(&prop_vector);
-	primitives.append(_primitiv);
-
+	
 	model = new PolyQtTableModel(&prop_vector);
 	//poly_line->setModel(model);
 
@@ -64,7 +64,7 @@ void PolyQtTableWidget::showDialog()
 
 void PolyQtTableWidget::on_create_clicked()
 {
-	//primitives.at(ui.comboBox->currentIndex())->resizeVector();
+	
 }
 
 void PolyQtTableWidget::keyPressEvent(QKeyEvent* pe)

@@ -31,10 +31,10 @@ public:
 
 
     /*!
-     * \brief regExp - Возвращает регулярное выражение для подстановки в маску ввода и проверки вставки в модель
+     * \brief regExpToValidation - Возвращает регулярное выражение для подстановки в маску ввода и проверки вставки в модель
      * \return
      */
-    virtual QRegExp regExp();
+    virtual QRegExp regExpToValidation();
 
     /*!
      * \brief className получение имени класса

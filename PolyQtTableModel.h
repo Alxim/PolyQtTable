@@ -26,7 +26,7 @@ public:
     bool insertRows(int position, int rows, const QModelIndex& index = QModelIndex()) override;
     bool removeRows(int row, int count, const QModelIndex& index = QModelIndex()) override;
 
-    QRegExp regExp(const QModelIndex& index) const;
+    QRegExp regExpToValidation(const QModelIndex& index) const;
 
 private:
     QVector<PropertyAbstact*>* _prop_vector;

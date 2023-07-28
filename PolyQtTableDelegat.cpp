@@ -32,7 +32,7 @@ QWidget *PolyQtTableDelegat::createEditor(QWidget *parent, const QStyleOptionVie
         le = new QLineEdit(parent);
 
         const PolyQtTableModel* model = static_cast<const PolyQtTableModel*> (index.model() );
-        QRegExp re = model->regExp(index);
+        QRegExp re = model->regExpToValidation(index);
         if(! re.isEmpty() )
         {
             QRegExpValidator* val = new QRegExpValidator(re);
@@ -103,50 +103,11 @@ void PolyQtTableDelegat::setModelData(QWidget *editor, QAbstractItemModel *model
         break;
 
     case 1:
-
         le = static_cast<QLineEdit*>(editor);
         value = le->text();
         model->setData(index, value, Qt::EditRole);
         break;
 
-        //        cd = static_cast<QComboBox*>(editor);
-        //        value = cd->currentText();
-        //        model->setData(index, value, Qt::EditRole);
-        //        //	Получаем то что сейчас установлено в качестве IdSzk
-
-        //        temp = index.sibling(index.row(), 3).data().toString();
-        ////        lst = KK::getSpisIdsSzk(value);
-
-        //        if(lst.count() > 1)
-        //        {
-        //            model->setData(index.sibling(index.row(), 0), "", Qt::EditRole);
-        //            model->setData(index.sibling(index.row(), 1), "", Qt::EditRole);
-        //            model->setData(index.sibling(index.row(), 2), "", Qt::EditRole);
-        //            model->setData(index.sibling(index.row(), 3), "", Qt::EditRole);
-        //            model->setData(index.sibling(index.row(), 4), "", Qt::EditRole);
-        //            return;
-        //        }
-
-        //        //	Сравниеваем с перечнем вариантов
-
-        //        if(!lst.contains(temp))
-        //        {
-        //            if(lst.count() == 0)
-        //            {
-        //                QMessageBox::critical(0, "Проблема", "Нет идентификатора из СЗК");
-        //            }
-        //            else
-        //            {
-        //                temp = lst[0];
-        //                model->setData(index.sibling(index.row(), 3), lst[0], Qt::EditRole);
-        //            }
-        //        }
-
-        //        //	Устанавливаем идентификатор КК
-
-        //        model->setData(index.sibling(index.row(), 1), KK::getPrimKK(value, temp), Qt::EditRole);
-
-        break;
 
     default:
         QItemDelegate::setModelData(editor, model, index);

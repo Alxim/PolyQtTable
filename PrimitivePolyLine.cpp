@@ -64,6 +64,7 @@ void PrimitivePolyLine::resizeVector()
 			));
 			if (_model != nullptr)
 				_model->insertRows(_model->rowCount(), 1);
+
 		}
 	}
 
