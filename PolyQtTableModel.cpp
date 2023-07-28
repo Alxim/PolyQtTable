@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "PolyQtTableModel.h"
+#include "ObjectQtAbstract.h"
 
 
 
-
-PolyQtTableModel::PolyQtTableModel(QVector<PropertyAbstact*>* prop_vector)
-    : _prop_vector(prop_vector)
+PolyQtTableModel::PolyQtTableModel(ObjectQtAbstract* object_qt)
+    : _object_qt(object_qt)
 {
 }
 
@@ -16,7 +16,7 @@ QVariant PolyQtTableModel::data(const QModelIndex& index, int nRole) const
 
     int row = index.row();
 
-    PropertyAbstact* prop = _prop_vector->at(row);
+    PropertyAbstact* prop = _object_qt->propVector().at(row);
 
     switch (index.column())
     {
@@ -45,7 +45,7 @@ bool PolyQtTableModel::setData(const QModelIndex& index, const QVariant& value, 
 
     if (index.isValid() && nRole == Qt::EditRole)
     {
-        _prop_vector->at(row)->setValue(value);
+        _object_qt->propVector().at(row)->setValue(value);
         return true;
     }
 
@@ -55,7 +55,7 @@ bool PolyQtTableModel::setData(const QModelIndex& index, const QVariant& value, 
 
 int PolyQtTableModel::rowCount(const QModelIndex&) const
 {
-    return _prop_vector->size();
+    return _object_qt->propVector().size();
 }
 
 
@@ -71,7 +71,7 @@ Qt::ItemFlags PolyQtTableModel::flags(const QModelIndex& index) const
         col = index.column();
 
     Qt::ItemFlags ret = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    if (_prop_vector->at(row)->flagCol(col))
+    if (_object_qt->propVector().at(row)->flagCol(col))
         ret |= Qt::ItemIsEditable;
 
     return ret;
@@ -114,8 +114,10 @@ bool PolyQtTableModel::removeRows(int row, int count, const QModelIndex& index)
 {
     beginRemoveRows(QModelIndex(), row, row + count - 1);
 
-    for (int _row = 0; _row < count; _row++)
-        _prop_vector->removeAt(row);
+    _object_qt->removeRows(row, count, index);
+
+    //for (int _row = 0; _row < count; _row++)
+    //    _prop_vector->removeAt(row);
 
     endRemoveRows();
     return true;
@@ -123,5 +125,5 @@ bool PolyQtTableModel::removeRows(int row, int count, const QModelIndex& index)
 
 QRegExp PolyQtTableModel::regExpToValidation(const QModelIndex &index) const
 {
-    return _prop_vector->at(index.row())->regExpToValidation();
+    return _object_qt->propVector().at(index.row())->regExpToValidation();
 }

@@ -21,7 +21,7 @@
 
 #include "hostUI.h"
 #include "hostQt.h"
-#include "PolyQtTable.h"
+#include "PolyQtTableWidget.h"
 
 extern "C" __declspec(dllexport) bool showDialog(HWND parent)
 {

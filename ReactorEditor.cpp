@@ -2,7 +2,6 @@
 
 #include "hostUI.h"
 #include "hostQt.h"
-#include "PolyQtTable.h"
 #include "nc2ac.h"
 #include "objptr.h"
 

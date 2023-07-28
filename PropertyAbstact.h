@@ -48,7 +48,7 @@ public:
      * \brief regExpToValidation - Возвращает регулярное выражение для подстановки в маску ввода и проверки вставки в модель
      * \return
      */
-    virtual QRegExp regExpToValidation();
+    virtual QRegExp regExpToValidation() const;
 
 
     /*!

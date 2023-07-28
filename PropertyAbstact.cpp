@@ -30,7 +30,7 @@ bool PropertyAbstact::invertColor()
     return false;
 }
 
-QRegExp PropertyAbstact::regExpToValidation()
+QRegExp PropertyAbstact::regExpToValidation() const
 {
     return QRegExp();
 }

@@ -20,14 +20,11 @@
 #pragma once
 
 #include <QMainWindow>
-#include "PrimitivePolyLine.h"
 #include "PolyQtTableModel.h"
-#include "PolyQtTableDelegat.h"
-#include "PrimitiveAbstract.h"
-#include "ui_PolyQtTable.h"
+#include "ui_PolyQtTableWidget.h"
 
 
-class PropertyAbstact;
+class ObjectQtAbstract;
 
 class PolyQtTableWidget : public QWidget
 {
@@ -40,19 +37,15 @@ public:
 private slots:
   void showDialog();
   void on_create_clicked();
+  void setObjectQt();
 
 protected:
   virtual void keyPressEvent(QKeyEvent* pe);
 
 private:
   Ui::PolyQtTableClass ui;
-
   PolyQtTableModel* model = nullptr;
-
-
-  QVector<PropertyAbstact*> prop_vector;
-
-  PrimitivePolyLine* _primitiv;
+  ObjectQtAbstract* _object_qt;
 
   void clipboarsPaste();
 };

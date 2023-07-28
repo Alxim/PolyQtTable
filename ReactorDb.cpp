@@ -2,7 +2,6 @@
 
 #include "hostUI.h"
 #include "hostQt.h"
-#include "PolyQtTable.h"
 
 
 class NsdkDbReactor;

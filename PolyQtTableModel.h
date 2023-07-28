@@ -11,10 +11,12 @@
 #include "PropertyAbstact.h"
 
 
+class ObjectQtAbstract;
+
 class PolyQtTableModel : public QAbstractTableModel
 {
 public:
-    PolyQtTableModel(QVector<PropertyAbstact*>* prop_vector);
+    explicit PolyQtTableModel(ObjectQtAbstract* object_qt);
 
     QVariant data(const QModelIndex& index, int nRole) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int nRole = Qt::EditRole) override;
@@ -29,6 +31,6 @@ public:
     QRegExp regExpToValidation(const QModelIndex& index) const;
 
 private:
-    QVector<PropertyAbstact*>* _prop_vector;
+    ObjectQtAbstract* _object_qt;
 };
 

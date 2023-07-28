@@ -39,18 +39,14 @@ QWidget *PolyQtTableDelegat::createEditor(QWidget *parent, const QStyleOptionVie
             le->setValidator(val);
         }
         return le;
-
-        cd = new QComboBox(parent);
-        cd->addItems(QStringList() << "Да" << "Нет");
     }
-        return cd;
 
     default:
         return QItemDelegate::createEditor(parent, option, index);
     }
 }
 
-//ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+//***********************************************************************************************************************************
 
 void PolyQtTableDelegat::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
@@ -73,21 +69,13 @@ void PolyQtTableDelegat::setEditorData(QWidget *editor, const QModelIndex &index
 
         break;
 
-        value = index.model()->data(index, Qt::EditRole).toString();
-        cd = static_cast<QComboBox*>(editor);
-
-        for(int i = 0; i < cd->count(); i++)
-            if(cd->itemText(i) == value)
-                cd->setCurrentIndex(i);
-        break;
-
     default:
         QItemDelegate::setEditorData(editor, index);
         break;
     }
 }
 
-//ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+//***********************************************************************************************************************************
 
 void PolyQtTableDelegat::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
@@ -115,7 +103,7 @@ void PolyQtTableDelegat::setModelData(QWidget *editor, QAbstractItemModel *model
     }
 }
 
-//ЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖЖ
+//***********************************************************************************************************************************
 
 void PolyQtTableDelegat::updateEditorGeometry(QWidget *editor,
                                               const QStyleOptionViewItem &option, const QModelIndex &/* index */) const

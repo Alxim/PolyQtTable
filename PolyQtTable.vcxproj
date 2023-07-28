@@ -99,32 +99,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="PolyQtTable.ui">
-      <AdditionalInputs>%(AdditionalInputs)</AdditionalInputs>
-      <Command>$(QtRoot)\bin\uic.exe .\HelloQtChild.ui -o "$(IntDir)\ui_HelloQtChild.h"</Command>
-      <Message>UIC HelloQtChild.ui</Message>
-      <Outputs>$(IntDir)\ui_HelloQtChild.h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\uic.exe .\PolyQtTable.ui -o "$(IntDir)\ui_PolyQtTable.h"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">UIC PolyQtTable.ui</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\ui_PolyQtTable.h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\uic.exe .\PolyQtTable.ui -o "$(IntDir)\ui_PolyQtTable.h"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">UIC PolyQtTable.ui</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\ui_PolyQtTable.h;%(Outputs)</Outputs>
+    <CustomBuild Include="ObjectQtAbstract.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\ObjectQtAbstract.h -o "$(IntDir)\moc_ObjectQtAbstract.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC ObjectQtAbstract.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_ObjectQtAbstract.cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\ObjectQtAbstract.h -o "$(IntDir)\moc_ObjectQtAbstract.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC ObjectQtAbstract.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_ObjectQtAbstract.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="PolyQtTable.h">
+    <ClCompile Include="ObjectQtAbstract.cpp" />
+  </ItemGroup>
+    <ItemGroup>
+    <CustomBuild Include="ObjectQt3DPolyLine.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\ObjectQt3DPolyLine.h -o "$(IntDir)\moc_ObjectQt3DPolyLine.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC ObjectQt3DPolyLine.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_ObjectQt3DPolyLine.cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\ObjectQt3DPolyLine.h -o "$(IntDir)\moc_ObjectQt3DPolyLine.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC ObjectQt3DPolyLine.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_ObjectQt3DPolyLine.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClCompile Include="ObjectQt3DPolyLine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="PolyQtTableWidget.ui">
       <AdditionalInputs>%(AdditionalInputs)</AdditionalInputs>
-      <Command>$(QtRoot)\bin\moc.exe .\HelloQtChild.h -o "$(IntDir)\moc_HelloQtChild.cpp"</Command>
-      <Message>MOC HelloQtChild.h</Message>
-      <Outputs>$(IntDir)\moc_HelloQtChild.cpp;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\PolyQtTable.h -o "$(IntDir)\moc_PolyQtTable.cpp"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC PolyQtTable.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_PolyQtTable.cpp;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\PolyQtTable.h -o "$(IntDir)\moc_PolyQtTable.cpp"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PolyQtTable.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PolyQtTable.cpp;%(Outputs)</Outputs>
+      <Command>$(QtRoot)\bin\uic.exe .\PolyQtTableWidget.ui -o "$(IntDir)\ui_PolyQtTableWidget.h"</Command>
+      <Message>UIC PolyQtTableWidget.ui</Message>
+      <Outputs>$(IntDir)\ui_PolyQtTableWidget.h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\uic.exe .\PolyQtTableWidget.ui -o "$(IntDir)\ui_PolyQtTableWidget.h"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">UIC PolyQtTableWidget.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\PolyQtTableWidget.h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\uic.exe .\PolyQtTableWidget.ui -o "$(IntDir)\ui_PolyQtTableWidget.h"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">UIC PolyQtTableWidget.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\ui_PolyQtTableWidget.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="PolyQtTableWidget.h">
+      <AdditionalInputs>%(AdditionalInputs)</AdditionalInputs>
+      <Command>$(QtRoot)\bin\moc.exe .\PolyQtTableWidget.h -o "$(IntDir)\moc_PolyQtTableWidget.cpp"</Command>
+      <Message>MOC PolyQtTableWidget.h</Message>
+      <Outputs>$(IntDir)\moc_PolyQtTableWidget.cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\PolyQtTableWidget.h -o "$(IntDir)\moc_PolyQtTableWidget.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC PolyQtTableWidget.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_PolyQtTableWidget.cpp;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\PolyQtTableWidget.h -o "$(IntDir)\moc_PolyQtTableWidget.cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PolyQtTableWidget.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PolyQtTableWidget.cpp;%(Outputs)</Outputs>
     </CustomBuild>
     <ClCompile Include="PolyNcEditorReactor.cpp" />
-    <ClCompile Include="PolyQtTable.cpp" />
+    <ClCompile Include="PolyQtTableWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="PolyQtTableModel.h">
@@ -186,17 +208,6 @@
     <ClCompile Include="PropertyValueInt.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="PrimitivePolyLine.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\PrimitivePolyLine.h -o "$(IntDir)\moc_PrimitivePolyLine.cpp"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC PrimitivePolyLine.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_PrimitivePolyLine.cpp;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\PrimitivePolyLine.h -o "$(IntDir)\moc_PrimitivePolyLine.cpp"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PrimitivePolyLine.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PrimitivePolyLine.cpp;%(Outputs)</Outputs>
-    </CustomBuild>
-    <ClCompile Include="PrimitivePolyLine.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="PolyQtTableDelegat.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\PolyQtTableDelegat.h -o "$(IntDir)\moc_PolyQtTableDelegat.cpp"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC PolyQtTableDelegat.h</Message>
@@ -206,17 +217,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PolyQtTableDelegat.cpp;%(Outputs)</Outputs>
     </CustomBuild>
     <ClCompile Include="PolyQtTableDelegat.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="PrimitiveAbstract.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\PrimitiveAbstract.h -o "$(IntDir)\moc_PrimitiveAbstract.cpp"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC PrimitiveAbstract.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(IntDir)\moc_PrimitiveAbstract.cpp;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(QtRoot)\bin\moc.exe .\PrimitiveAbstract.h -o "$(IntDir)\moc_PrimitiveAbstract.cpp"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PrimitiveAbstract.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PrimitiveAbstract.cpp;%(Outputs)</Outputs>
-    </CustomBuild>
-    <ClCompile Include="PrimitiveAbstract.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="PropertyValueCoordinates.h">
@@ -243,7 +243,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTable.cpp">
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_ObjectQtAbstract.cpp">
+      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_ObjectQt3DPolyLine.cpp">
+      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+	<ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableWidget.cpp">
+      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableDelegat.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableModel.cpp">
@@ -259,15 +268,6 @@
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueInt.cpp">
-      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PrimitiveAbstract.cpp">
-      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PrimitivePolyLine.cpp">
-      <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableDelegat.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueCoordinates.cpp">

@@ -18,8 +18,9 @@
 //
 
 #include "stdafx.h"
-#include "PolyQtTable.h"
-#include "PrimitivePolyLine.h"
+#include "ObjectQt3DPolyLine.h"
+#include "PolyQtTableDelegat.h"
+#include "PolyQtTableWidget.h"
 #include "PropertyAbstact.h"
 
 #include <qdebug.h>
@@ -33,17 +34,13 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 
 	QObject::connect(ui.create, SIGNAL(clicked()), this, SLOT(showDialog()));
 
-	_primitiv = new PrimitivePolyLine(&prop_vector);
-	
-	model = new PolyQtTableModel(&prop_vector);
-	//poly_line->setModel(model);
-
 	ui.tableView->setModel(model);
 
 	ui.tableView->resizeColumnsToContents();
 	ui.tableView->hideColumn(2);
 	ui.tableView->horizontalHeader()->hide();
 	ui.tableView->verticalHeader()->hide();
+
 
 	ui.tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 	ui.tableView->setItemDelegate(new PolyQtTableDelegat());
@@ -53,11 +50,17 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 PolyQtTableWidget::~PolyQtTableWidget()
 {}
 
+
+void PolyQtTableWidget::setObjectQt()
+{
+	_object_qt = new ObjectQt3DPolyLine(this);
+	model = new PolyQtTableModel( _object_qt );
+}
+
 void PolyQtTableWidget::showDialog()
 {
 	qDebug() << "Test print";
-	_primitiv->create();
-	/**/
+	_object_qt->create();
 
 	acutPrintf(L"\nCreate 3Dpolyline\n");
 }
@@ -95,6 +98,6 @@ void PolyQtTableWidget::keyPressEvent(QKeyEvent* pe)
 void PolyQtTableWidget::clipboarsPaste()
 {
 	QModelIndex index = ui.tableView->currentIndex();
-	_primitiv->pasteClipboars(index);
+	_object_qt->pasteClipboars(index);
 	ui.tableView->setCurrentIndex(index);
 }
