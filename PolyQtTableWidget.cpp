@@ -1,20 +1,20 @@
 //
-// Копирайт (С) 2019, ООО «Нанософт разработка». Все права защищены.
+// РљРѕРїРёСЂР°Р№С‚ (РЎ) 2019, РћРћРћ В«РќР°РЅРѕСЃРѕС„С‚ СЂР°Р·СЂР°Р±РѕС‚РєР°В». Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.
 // 
-// Данное программное обеспечение, все исключительные права на него, его
-// документация и сопроводительные материалы принадлежат ООО «Нанософт разработка».
-// Данное программное обеспечение может использоваться при разработке и входить
-// в состав разработанных программных продуктов при соблюдении условий
-// использования, оговоренных в «Лицензионном договоре присоединения
-// на использование программы для ЭВМ «Платформа nanoCAD»».
+// Р”Р°РЅРЅРѕРµ РїСЂРѕРіСЂР°РјРјРЅРѕРµ РѕР±РµСЃРїРµС‡РµРЅРёРµ, РІСЃРµ РёСЃРєР»СЋС‡РёС‚РµР»СЊРЅС‹Рµ РїСЂР°РІР° РЅР° РЅРµРіРѕ, РµРіРѕ
+// РґРѕРєСѓРјРµРЅС‚Р°С†РёСЏ Рё СЃРѕРїСЂРѕРІРѕРґРёС‚РµР»СЊРЅС‹Рµ РјР°С‚РµСЂРёР°Р»С‹ РїСЂРёРЅР°РґР»РµР¶Р°С‚ РћРћРћ В«РќР°РЅРѕСЃРѕС„С‚ СЂР°Р·СЂР°Р±РѕС‚РєР°В».
+// Р”Р°РЅРЅРѕРµ РїСЂРѕРіСЂР°РјРјРЅРѕРµ РѕР±РµСЃРїРµС‡РµРЅРёРµ РјРѕР¶РµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РїСЂРё СЂР°Р·СЂР°Р±РѕС‚РєРµ Рё РІС…РѕРґРёС‚СЊ
+// РІ СЃРѕСЃС‚Р°РІ СЂР°Р·СЂР°Р±РѕС‚Р°РЅРЅС‹С… РїСЂРѕРіСЂР°РјРјРЅС‹С… РїСЂРѕРґСѓРєС‚РѕРІ РїСЂРё СЃРѕР±Р»СЋРґРµРЅРёРё СѓСЃР»РѕРІРёР№
+// РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ, РѕРіРѕРІРѕСЂРµРЅРЅС‹С… РІ В«Р›РёС†РµРЅР·РёРѕРЅРЅРѕРј РґРѕРіРѕРІРѕСЂРµ РїСЂРёСЃРѕРµРґРёРЅРµРЅРёСЏ
+// РЅР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РїСЂРѕРіСЂР°РјРјС‹ РґР»СЏ Р­Р’Рњ В«РџР»Р°С‚С„РѕСЂРјР° nanoCADВ»В».
 // 
-// Данное программное обеспечение защищено в соответствии с законодательством
-// Российской Федерации об интеллектуальной собственности и международными
-// правовыми актами.
+// Р”Р°РЅРЅРѕРµ РїСЂРѕРіСЂР°РјРјРЅРѕРµ РѕР±РµСЃРїРµС‡РµРЅРёРµ Р·Р°С‰РёС‰РµРЅРѕ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ Р·Р°РєРѕРЅРѕРґР°С‚РµР»СЊСЃС‚РІРѕРј
+// Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё РѕР± РёРЅС‚РµР»Р»РµРєС‚СѓР°Р»СЊРЅРѕР№ СЃРѕР±СЃС‚РІРµРЅРЅРѕСЃС‚Рё Рё РјРµР¶РґСѓРЅР°СЂРѕРґРЅС‹РјРё
+// РїСЂР°РІРѕРІС‹РјРё Р°РєС‚Р°РјРё.
 // 
-// Используя данное программное обеспечение,  его документацию и
-// сопроводительные материалы вы соглашаетесь с условиями использования,
-// указанными выше. 
+// РСЃРїРѕР»СЊР·СѓСЏ РґР°РЅРЅРѕРµ РїСЂРѕРіСЂР°РјРјРЅРѕРµ РѕР±РµСЃРїРµС‡РµРЅРёРµ,  РµРіРѕ РґРѕРєСѓРјРµРЅС‚Р°С†РёСЋ Рё
+// СЃРѕРїСЂРѕРІРѕРґРёС‚РµР»СЊРЅС‹Рµ РјР°С‚РµСЂРёР°Р»С‹ РІС‹ СЃРѕРіР»Р°С€Р°РµС‚РµСЃСЊ СЃ СѓСЃР»РѕРІРёСЏРјРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ,
+// СѓРєР°Р·Р°РЅРЅС‹РјРё РІС‹С€Рµ. 
 //
 
 #include "stdafx.h"
@@ -26,6 +26,7 @@
 #include <qdebug.h>
 #include <QMessageBox>
 #include <QKeyEvent>
+#include <QMenu>
 
 PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 	: QWidget(parent)
@@ -45,6 +46,12 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 
 	ui.tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 	ui.tableView->setItemDelegate(new PolyQtTableDelegat());
+
+	ui.tableView->installEventFilter(this);
+
+	//  РЈСЃС‚Р°РЅРѕРІРєР° РєРѕРЅС‚РµРєСЃС‚РЅРѕРіРѕ РјРµРЅСЋ
+	ui.tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ui.tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(customMenu(QPoint)));
 }
 
 PolyQtTableWidget::~PolyQtTableWidget()
@@ -60,6 +67,21 @@ void PolyQtTableWidget::setObjectQt()
 {
 	_object_qt = new ObjectQt3DPolyLine(this);
 	_model = new PolyQtTableModel( _object_qt );
+}
+
+void PolyQtTableWidget::customMenu(QPoint pos)
+{
+	QMenu* menu = new QMenu(this);
+
+	if (_object_qt->mayPasteClipboars(ui.tableView->currentIndex() ) )
+	{
+		QAction* insert = new QAction("Р’СЃС‚Р°РІРёС‚СЊ", this);
+
+		connect(insert, &QAction::triggered, this, &PolyQtTableWidget::clipboarsPaste);
+
+		menu->addAction(insert);
+	}
+	menu->popup(ui.tableView->viewport()->mapToGlobal(pos));
 }
 
 void PolyQtTableWidget::showDialog()
@@ -99,6 +121,38 @@ void PolyQtTableWidget::keyPressEvent(QKeyEvent* pe)
 
 	pe->accept();
 }
+
+
+bool PolyQtTableWidget::eventFilter(QObject* obj, QEvent* event)
+{
+    if ((event->type() != QEvent::KeyPress))
+        return false;
+
+    QKeyEvent* key_event = static_cast<QKeyEvent*>(event);
+
+	switch (key_event->key())
+	{
+	case Qt::Key_V:
+		if (key_event->modifiers() == Qt::ControlModifier)
+		{
+			clipboarsPaste();
+		}
+		break;
+
+	case Qt::Key_Insert:
+		if (key_event->modifiers() == Qt::ShiftModifier)
+		{
+			clipboarsPaste();
+		}
+		break;
+
+	default:
+		;
+	}
+
+    return false;
+}
+
 
 void PolyQtTableWidget::clipboarsPaste()
 {

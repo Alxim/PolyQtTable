@@ -4,10 +4,9 @@
 #include <QObject>
 #include <QHash>
 
-
 class PropertyAbstact;
 class PolyQtTableWidget;
-
+class QModelIndex;
 
 class ObjectQtAbstract : public QObject
 {
@@ -20,7 +19,9 @@ public:
 
     virtual bool create() = 0;
 
-    virtual bool pasteClipboars(QModelIndex index) = 0;
+    virtual bool mayPasteClipboars(const QModelIndex& index);
+
+    virtual bool pasteClipboars(const QModelIndex& index) = 0;
 
     virtual QVector<PropertyAbstact*>& propVector() = 0;
 

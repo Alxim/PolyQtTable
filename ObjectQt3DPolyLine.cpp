@@ -181,10 +181,21 @@ bool ObjectQt3DPolyLine::create()
 	return true;
 }
 
+bool ObjectQt3DPolyLine::mayPasteClipboars(const QModelIndex& index)
+{
+	if (index.column() == 0)
+		return false;
+
+	int point_start_index = _prop_vector.indexOf(_vertex_ptr);
+	if (index.row() < point_start_index)
+		return false;
+
+	return true;
+}
 
 //**********************************************************************************************************************99
 
-bool ObjectQt3DPolyLine::pasteClipboars(QModelIndex index)
+bool ObjectQt3DPolyLine::pasteClipboars(const QModelIndex& index)
 {
 
 	QClipboard* clipboard = QGuiApplication::clipboard();

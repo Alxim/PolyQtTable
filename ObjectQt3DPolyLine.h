@@ -22,7 +22,9 @@ public:
 
     bool create() override;
 
-    bool pasteClipboars(QModelIndex index) override;
+    bool mayPasteClipboars(const QModelIndex& index) override;
+
+    bool pasteClipboars(const QModelIndex& index) override;
 
     QVector<PropertyAbstact*>& propVector()  override;
 

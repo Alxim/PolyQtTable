@@ -21,13 +21,13 @@ void PolyNcEditorReactor::pickfirstModified()
 	acutPrintf(
 		L"\nvoid PolyNcEditorReactor::pickfirstModified().\n");
 
-	// Имя набора
+	// РРјСЏ РЅР°Р±РѕСЂР°
 	ads_name sset; 
 
-	ads_name ename; // Имя для элемента набора
-	// AcDbObjectId entId;  // Идентификатор объекта
+	ads_name ename; // РРјСЏ РґР»СЏ СЌР»РµРјРµРЅС‚Р° РЅР°Р±РѕСЂР°
+	// AcDbObjectId entId;  // РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕР±СЉРµРєС‚Р°
 
-	// Выбрать все выделенные объекты в базе данных графа
+	// Р’С‹Р±СЂР°С‚СЊ РІСЃРµ РІС‹РґРµР»РµРЅРЅС‹Рµ РѕР±СЉРµРєС‚С‹ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С… РіСЂР°С„Р°
 	acedSSGet(TEXT("_I"), NULL, NULL, NULL, sset);
 	long length;
 	acedSSLength(sset, (Adesk::Int32*)&length);
@@ -38,11 +38,11 @@ void PolyNcEditorReactor::pickfirstModified()
 		return;
 	}
 	
-	acutPrintf( TEXT( "\n\nКоличество выделенных объектов:% d" ), length );
+	acutPrintf( TEXT( "\n\nРљРѕР»РёС‡РµСЃС‚РІРѕ РІС‹РґРµР»РµРЅРЅС‹С… РѕР±СЉРµРєС‚РѕРІ:% d" ), length );
 
 	for (long i = 0; i < length; i++)
 	{
-		acutPrintf(TEXT("\n\nТекущий объект :% d"), i);
+		acutPrintf(TEXT("\n\nРўРµРєСѓС‰РёР№ РѕР±СЉРµРєС‚ :% d"), i);
 
 		acedSSName(sset, i, ename);
 		AcDbObjectId objId;
@@ -53,11 +53,11 @@ void PolyNcEditorReactor::pickfirstModified()
 			continue;
 		}
 
-		// Вычисление ID для перехода от ads_name к AcDbObjectId
+		// Р’С‹С‡РёСЃР»РµРЅРёРµ ID РґР»СЏ РїРµСЂРµС…РѕРґР° РѕС‚ ads_name Рє AcDbObjectId
 		int result = acdbGetObjectId(objId, ename);
 		if (result != Acad::eOk)
 		{
-			acutPrintf(TEXT("\nОшибка получение идентификатора объекта %d"), result);
+			acutPrintf(TEXT("\nРћС€РёР±РєР° РїРѕР»СѓС‡РµРЅРёРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° РѕР±СЉРµРєС‚Р° %d"), result);
 			continue;
 		}
 		
@@ -67,22 +67,22 @@ void PolyNcEditorReactor::pickfirstModified()
 			continue;
 		}
 
-		// Получить указатель на текущий элемент
+		// РџРѕР»СѓС‡РёС‚СЊ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚
 		NcDbEntity* pEnt;
 		Acad::ErrorStatus es = ncdbOpenNcDbEntity(pEnt, objId, AcDb::kForRead);
 
-		// Выберите полилинию в качестве границы, пропустите этот цикл напрямую
+		// Р’С‹Р±РµСЂРёС‚Рµ РїРѕР»РёР»РёРЅРёСЋ РІ РєР°С‡РµСЃС‚РІРµ РіСЂР°РЅРёС†С‹, РїСЂРѕРїСѓСЃС‚РёС‚Рµ СЌС‚РѕС‚ С†РёРєР» РЅР°РїСЂСЏРјСѓСЋ
 		if (es == Acad::eWasOpenForWrite)
 		{
-			acutPrintf(TEXT("\nОшибка получение объекта %s"), es);
+			acutPrintf(TEXT("\nРћС€РёР±РєР° РїРѕР»СѓС‡РµРЅРёРµ РѕР±СЉРµРєС‚Р° %s"), es);
 			continue;
 		}
 
 		printObj(pEnt);
 		std::string str = CT2A( pEnt->isA()->name() ); 
 
-		// Проверяем тип примитива.
-		//  TODO вызов метода обработки примитива и похоже это будет некий отдельный класс адаптер
+		// РџСЂРѕРІРµСЂСЏРµРј С‚РёРї РїСЂРёРјРёС‚РёРІР°.
+		//  TODO РІС‹Р·РѕРІ РјРµС‚РѕРґР° РѕР±СЂР°Р±РѕС‚РєРё РїСЂРёРјРёС‚РёРІР° Рё РїРѕС…РѕР¶Рµ СЌС‚Рѕ Р±СѓРґРµС‚ РЅРµРєРёР№ РѕС‚РґРµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ Р°РґР°РїС‚РµСЂ
 
 		ObjectQtAbstract* temp = ObjectQtAbstract::OBJECT_QT_HASH.value(QString::fromStdString(str), nullptr);
 
