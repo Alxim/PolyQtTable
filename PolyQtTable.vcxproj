@@ -71,6 +71,7 @@
       <PreprocessorDefinitions>_WIN64;WIN32;_DEBUG;_WINDOWS;_USRDLL;PolyQtTable_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-Zm150 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories);$(QTDIR)\include</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,6 +91,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_WIN64;WIN32;NDEBUG;_WINDOWS;_USRDLL;PolyQtTable_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories);$(QTDIR)\include</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,7 +111,7 @@
     </CustomBuild>
     <ClCompile Include="ObjectQtAbstract.cpp" />
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <CustomBuild Include="ObjectQt3DPolyLine.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">$(QtRoot)\bin\moc.exe .\ObjectQt3DPolyLine.h -o "$(IntDir)\moc_ObjectQt3DPolyLine.cpp"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release NCAD|x64'">MOC ObjectQt3DPolyLine.h</Message>
@@ -145,7 +147,6 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">MOC PolyQtTableWidget.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug NCAD|x64'">$(IntDir)\moc_PolyQtTableWidget.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <ClCompile Include="PolyNcEditorReactor.cpp" />
     <ClCompile Include="PolyQtTableWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +231,6 @@
     <ClCompile Include="PropertyValueCoordinates.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PolyNcEditorReactor.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +249,7 @@
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_ObjectQt3DPolyLine.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
-	<ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableWidget.cpp">
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableWidget.cpp">
       <AdditionalOptions>/FIstdafx.h %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableDelegat.cpp">

@@ -4,6 +4,8 @@
 #include "hostQt.h"
 #include "nc2ac.h"
 #include "objptr.h"
+#include "ObjectQtAbstract.h"
+#include <QHash>
 
 void printObj(const AcDbObject* pObj);
 
@@ -66,8 +68,8 @@ void PolyNcEditorReactor::pickfirstModified()
 		}
 
 		// Получить указатель на текущий элемент
-		AcDbEntity* pEnt;
-		Acad::ErrorStatus es = acdbOpenAcDbEntity(pEnt, objId, AcDb::kForRead);
+		NcDbEntity* pEnt;
+		Acad::ErrorStatus es = ncdbOpenNcDbEntity(pEnt, objId, AcDb::kForRead);
 
 		// Выберите полилинию в качестве границы, пропустите этот цикл напрямую
 		if (es == Acad::eWasOpenForWrite)
@@ -82,33 +84,21 @@ void PolyNcEditorReactor::pickfirstModified()
 		// Проверяем тип примитива.
 		//  TODO вызов метода обработки примитива и похоже это будет некий отдельный класс адаптер
 
-		if (str == "AcDb3dPolyline") 
+		ObjectQtAbstract* temp = ObjectQtAbstract::OBJECT_QT_HASH.value(QString::fromStdString(str), nullptr);
+
+		acutPrintf(TEXT("\n OBJECT_QT_HASH.size() = %d "), ObjectQtAbstract::OBJECT_QT_HASH.size());
+		acutPrintf(TEXT("\n %s - str "), str);
+		acutPrintf(TEXT("\n %s - OBJECT_QT_HASH.keys "), ObjectQtAbstract::OBJECT_QT_HASH.keys().join(", ").toStdString());
+
+		if (temp != nullptr)
 		{
-			acutPrintf(TEXT("\n Выделна 3Д полелиния !"));
-			AcDb3dPolyline* p_line = static_cast <AcDb3dPolyline*> (pEnt);
-
-			NcGePoint3dArray gripPoints;
-			NcDbIntArray osnapModes;
-			NcDbIntArray geomIds;
-
-			p_line->getGripPoints(gripPoints, osnapModes, geomIds);
-
-			for (int j = 0; j < gripPoints.size(); j++)
-			{
-				NcGePoint3d point = gripPoints.at(j);
-				
-				ACHAR val_x[50], val_y[50], val_z[50];
-				acdbRToS(point.x, -1, 5, val_x);
-				acdbRToS(point.y, -1, 5, val_y);
-				acdbRToS(point.z, -1, 5, val_z);
-
-				acutPrintf(
-					TEXT("\nТочка %d : (x = %s, y = %s, z = %s)"),
-					j, val_x,
-					val_y,
-					val_z
-				);
-			}
+			acutPrintf(TEXT("\n temp != nullptr"));
+			if (temp->setNanoCadObject(pEnt))
+				return;
+		}
+		else
+		{
+			acutPrintf(TEXT("\n temp == nullptr \n %d "), ObjectQtAbstract::OBJECT_QT_HASH.size() );
 		}
 
 		delete pEnt;

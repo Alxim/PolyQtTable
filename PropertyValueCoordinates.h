@@ -42,6 +42,13 @@ public:
      */
     QString className() override;
 
+    bool neetChangeDelegat() override;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option,
+        const QModelIndex& index) override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model,
+        const QModelIndex& index) override;
+
 private:
     QString _name;
 

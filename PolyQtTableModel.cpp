@@ -61,7 +61,7 @@ int PolyQtTableModel::rowCount(const QModelIndex&) const
 
 int PolyQtTableModel::columnCount(const QModelIndex&) const
 {
-    return 3;
+    return 2;
 }
 
 
@@ -89,11 +89,11 @@ QVariant PolyQtTableModel::headerData(int nSection, Qt::Orientation orientation,
         switch (nSection)
         {
         case 0:
-            return QString("Ñâîéñòâî");
+            return QString("Ð¡Ð²Ð¾Ð¹ÑÑ‚Ð²Ð¾");
         case 1:
-            return QString("Çíà÷åíèå");
+            return QString("Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ");
         case 2:
-            return QString("Òèï");
+            return QString("Ð¢Ð¸Ð¿");
         }
     }
 
@@ -123,7 +123,7 @@ bool PolyQtTableModel::removeRows(int row, int count, const QModelIndex& index)
     return true;
 }
 
-QRegExp PolyQtTableModel::regExpToValidation(const QModelIndex &index) const
+PropertyAbstact* PolyQtTableModel::getProperty(const QModelIndex &index) const
 {
-    return _object_qt->propVector().at(index.row())->regExpToValidation();
+    return _object_qt->propVector().at(index.row());
 }

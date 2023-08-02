@@ -3,6 +3,9 @@
 #include <QString>
 #include <QVariant>
 
+class QStyleOptionViewItem;
+class QAbstractItemModel;
+
 class PropertyAbstact : public QObject
 {
     Q_OBJECT
@@ -56,6 +59,18 @@ public:
      * \return строка с именем класса
      */
     virtual QString className();
+
+    virtual bool neetChangeDelegat();
+
+    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option,
+        const QModelIndex& index);
+
+    virtual void setEditorData(QWidget* editor, const QModelIndex& index) {};
+    virtual void setModelData(QWidget* editor, QAbstractItemModel* model,
+        const QModelIndex& index) {};
+
+    virtual void paint(QPainter* painter, const QStyleOptionViewItem& option,
+        const QModelIndex& index, QStyleOptionViewItem& opt) {};
 
 signals:
     void valueChanched();

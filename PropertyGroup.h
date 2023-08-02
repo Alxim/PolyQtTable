@@ -46,6 +46,9 @@ public:
      */
     QString className() override;
 
+    void paint(QPainter* painter, const QStyleOptionViewItem& option,
+        const QModelIndex& index, QStyleOptionViewItem& opt) override;
+
 private:
     QString _name;
     QVariant _value;

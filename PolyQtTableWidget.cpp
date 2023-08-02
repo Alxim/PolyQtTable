@@ -34,27 +34,32 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 
 	QObject::connect(ui.create, SIGNAL(clicked()), this, SLOT(showDialog()));
 
-	ui.tableView->setModel(model);
+	setObjectQt();
+
+	ui.tableView->setModel(_model);
 
 	ui.tableView->resizeColumnsToContents();
-	ui.tableView->hideColumn(2);
 	ui.tableView->horizontalHeader()->hide();
 	ui.tableView->verticalHeader()->hide();
 
 
 	ui.tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 	ui.tableView->setItemDelegate(new PolyQtTableDelegat());
-
 }
 
 PolyQtTableWidget::~PolyQtTableWidget()
 {}
 
+PolyQtTableModel* PolyQtTableWidget::getModel()
+{
+	return _model;
+}
+
 
 void PolyQtTableWidget::setObjectQt()
 {
 	_object_qt = new ObjectQt3DPolyLine(this);
-	model = new PolyQtTableModel( _object_qt );
+	_model = new PolyQtTableModel( _object_qt );
 }
 
 void PolyQtTableWidget::showDialog()

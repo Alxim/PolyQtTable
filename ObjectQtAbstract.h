@@ -2,6 +2,8 @@
 
 #include <QString>
 #include <QObject>
+#include <QHash>
+
 
 class PropertyAbstact;
 class PolyQtTableWidget;
@@ -14,7 +16,7 @@ class ObjectQtAbstract : public QObject
 public:
     ObjectQtAbstract(PolyQtTableWidget* parent = nullptr) {};
 
-    virtual QString className() {return "PrimitiveAbstract";};
+    static QHash <QString, ObjectQtAbstract*> OBJECT_QT_HASH;
 
     virtual bool create() = 0;
 
@@ -23,4 +25,8 @@ public:
     virtual QVector<PropertyAbstact*>& propVector() = 0;
 
     virtual bool removeRows(int row, int count, const QModelIndex& index) = 0;
+
+    virtual bool setNanoCadObject(AcDbEntity* obj) = 0;
 };
+
+

@@ -12,6 +12,7 @@
 
 
 class ObjectQtAbstract;
+class QModelIndex;
 
 class PolyQtTableModel : public QAbstractTableModel
 {
@@ -28,7 +29,7 @@ public:
     bool insertRows(int position, int rows, const QModelIndex& index = QModelIndex()) override;
     bool removeRows(int row, int count, const QModelIndex& index = QModelIndex()) override;
 
-    QRegExp regExpToValidation(const QModelIndex& index) const;
+    PropertyAbstact* getProperty(const QModelIndex& index) const;
 
 private:
     ObjectQtAbstract* _object_qt;

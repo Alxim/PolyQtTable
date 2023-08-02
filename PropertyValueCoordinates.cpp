@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PropertyValueCoordinates.h"
 #include <QDebug>
+#include <QRegExpValidator>
+#include <QModelIndex>
 
 
 PropertyValueCoordinates::PropertyValueCoordinates(QString prop_name, QString default_value)
@@ -46,4 +48,33 @@ QRegExp PropertyValueCoordinates::regExpToValidation()
 QString PropertyValueCoordinates::className()
 {
     return QString ("PropertyValueCoordinates");
+}
+
+
+bool PropertyValueCoordinates::neetChangeDelegat()
+{
+    return true;
+}
+
+QWidget* PropertyValueCoordinates::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index)
+{
+    QLineEdit* le = new QLineEdit(parent);
+
+    QRegExpValidator* val = new QRegExpValidator(_reg_exp);
+    le->setValidator(val);
+    return le;
+}
+
+void PropertyValueCoordinates::setEditorData(QWidget* editor, const QModelIndex& index)
+{
+    QString value = index.model()->data(index, Qt::EditRole).toString();
+    QLineEdit* le = static_cast<QLineEdit*>(editor);
+    le->setText(value);
+}
+
+void PropertyValueCoordinates::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index)
+{
+    QLineEdit* le = static_cast<QLineEdit*>(editor);
+    QString value = le->text();
+    model->setData(index, value, Qt::EditRole);
 }

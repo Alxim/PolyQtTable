@@ -40,4 +40,14 @@ QString PropertyAbstact::className()
     return QString("AbstactProperty");
 }
 
+bool PropertyAbstact::neetChangeDelegat()
+{
+    return false;
+}
+
+QWidget* PropertyAbstact::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index)
+{
+    return nullptr;
+}
+
 

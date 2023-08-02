@@ -23,7 +23,6 @@
 #include "PolyQtTableModel.h"
 #include "ui_PolyQtTableWidget.h"
 
-
 class ObjectQtAbstract;
 
 class PolyQtTableWidget : public QWidget
@@ -33,6 +32,9 @@ class PolyQtTableWidget : public QWidget
 public:
   PolyQtTableWidget(QWidget *parent = nullptr);
   ~PolyQtTableWidget();
+
+  PolyQtTableModel* getModel();
+
 
 private slots:
   void showDialog();
@@ -44,7 +46,7 @@ protected:
 
 private:
   Ui::PolyQtTableClass ui;
-  PolyQtTableModel* model = nullptr;
+  PolyQtTableModel* _model = nullptr;
   ObjectQtAbstract* _object_qt;
 
   void clipboarsPaste();

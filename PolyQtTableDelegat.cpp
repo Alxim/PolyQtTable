@@ -17,90 +17,41 @@ PolyQtTableDelegat::PolyQtTableDelegat(QObject *parent)
 QWidget *PolyQtTableDelegat::createEditor(QWidget *parent, const QStyleOptionViewItem & option ,
                                           const QModelIndex & index) const
 {
-    QComboBox* cd;
-    QLineEdit* le;
+    const PolyQtTableModel* model = static_cast<const PolyQtTableModel*> (index.model());
+    PropertyAbstact* prop = model->getProperty(index);
 
-    switch(index.column())
+    if (prop->neetChangeDelegat())
     {
-
-    case 0:
-        return QItemDelegate::createEditor(parent, option, index);
-
-
-    case 1:
-    {
-        le = new QLineEdit(parent);
-
-        const PolyQtTableModel* model = static_cast<const PolyQtTableModel*> (index.model() );
-        QRegExp re = model->regExpToValidation(index);
-        if(! re.isEmpty() )
-        {
-            QRegExpValidator* val = new QRegExpValidator(re);
-            le->setValidator(val);
-        }
-        return le;
+        return prop->createEditor(parent, option, index);
     }
 
-    default:
-        return QItemDelegate::createEditor(parent, option, index);
-    }
+    return QItemDelegate::createEditor(parent, option, index);
 }
 
 //***********************************************************************************************************************************
 
 void PolyQtTableDelegat::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    QComboBox* cd;
-    QLineEdit* le;
+    const PolyQtTableModel* model = static_cast<const PolyQtTableModel*> (index.model());
+    PropertyAbstact* prop = model->getProperty(index);
 
-    QString value;
-
-    switch(index.column())
-    {
-    case 0:
+    if (prop->neetChangeDelegat())
+        prop->setEditorData(editor, index);
+    else
         QItemDelegate::setEditorData(editor, index);
-
-        break;
-
-    case 1:
-        value = index.model()->data(index, Qt::EditRole).toString();
-        le = static_cast<QLineEdit*>(editor);
-        le->setText(value);
-
-        break;
-
-    default:
-        QItemDelegate::setEditorData(editor, index);
-        break;
-    }
 }
 
 //***********************************************************************************************************************************
 
 void PolyQtTableDelegat::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    QComboBox* cd;
-    QLineEdit* le;
-    QString value;
+    const PolyQtTableModel* model_poly = static_cast<const PolyQtTableModel*> (index.model());
+    PropertyAbstact* prop = model_poly->getProperty(index);
 
-    switch(index.column())
-    {
-
-    case 0:
+    if (prop->neetChangeDelegat())
+        prop->setModelData(editor, model, index);
+    else
         QItemDelegate::setModelData(editor, model, index);
-        break;
-
-    case 1:
-        le = static_cast<QLineEdit*>(editor);
-        value = le->text();
-        model->setData(index, value, Qt::EditRole);
-        break;
-
-
-    default:
-        QItemDelegate::setModelData(editor, model, index);
-        break;
-    }
 }
 
 //***********************************************************************************************************************************
@@ -115,22 +66,14 @@ void PolyQtTableDelegat::updateEditorGeometry(QWidget *editor,
 void PolyQtTableDelegat::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem opt;
-    QString class_name;
-    QBrush br;
-    int row;
-
-
+    
     opt = setOptions(index, option);
-    row = index.row();
-    class_name = index.sibling(row, 2).data().toString();
 
-    if( class_name == "PropertyGroup")
-    {
-        painter->fillRect(option.rect, Qt::black);
-        opt.palette.setColor(QPalette::Text, Qt::white);
-    }
-    else
-        painter->fillRect(option.rect, Qt::white);
+
+    const PolyQtTableModel* model_poly = static_cast<const PolyQtTableModel*> (index.model());
+    PropertyAbstact* prop = model_poly->getProperty(index);
+
+    prop->paint(painter, option, index, opt);
 
 
     drawDisplay(painter, opt, opt.rect, index.data().toString());
