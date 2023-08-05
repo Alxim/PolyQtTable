@@ -14,7 +14,7 @@
 #include <QClipboard>
 #include <QGuiApplication>
 
-
+void updateTable();
 
 
 ObjectQt3DPolyLine::ObjectQt3DPolyLine(PolyQtTableWidget* parent)
@@ -109,7 +109,7 @@ bool ObjectQt3DPolyLine::create()
 	ptArr.setLogicalLength(count - point_start_index);
 
 	QString value;
-
+	//  Заполнение NcGePoint3dArray из данных интерфейса
 	for (int i = point_start_index; i < count; i++)
 	{	
 		value = _prop_vector.at(i)->value().toString(); 
@@ -191,7 +191,7 @@ bool ObjectQt3DPolyLine::mayPasteClipboars(const QModelIndex& index)
 	return true;
 }
 
-//**********************************************************************************************************************99
+//************************************************************************************************************************
 
 bool ObjectQt3DPolyLine::pasteClipboars(QTableView* table)
 {
@@ -238,9 +238,8 @@ shift = %s)"),
 	if (count == 1)
 		return _prop_vector.at(row)->setValue(text);
 	
-	QList<QModelIndex> indexs;
-	
 
+	//  Вставка нескольких строк
 	acutPrintf(TEXT("\nstart for"));
 	int i = 0;
 	for (; i < count; i++)
@@ -278,19 +277,12 @@ shift = %s)"),
 		acutPrintf(TEXT("\nInsert old point %d"), shift + i);
 		if (!_prop_vector.at(row + i)->setValue(lst[i]))
 			return false;
-		indexs << index.sibling(row + i, 1);
-		table->selectionModel()->setCurrentIndex(indexs.last(), QItemSelectionModel::ToggleCurrent);
-		//table->setCurrentIndex(index_select);
+
+		QModelIndex index_select = index.sibling(row + i, 1);
+		table->setCurrentIndex(index_select);
 	}
 
-	table->selectionModel()->clear();
-	for (auto in : indexs)
-		table->selectionModel()->setCurrentIndex(in, QItemSelectionModel::ToggleCurrent);
-	
-	//table->selectionModel()->selectedIndexes();
-	//table->setSelectionModel();
-	//table->setCurrentIndex(index.sibling(row + i - 1, 1));
-	
+	updateTable();	
 	return true;
 }
 
@@ -331,19 +323,20 @@ bool ObjectQt3DPolyLine::setNanoCadObject(AcDbEntity* pEnt)
 	_vertex_count->setValue(count);
 	resizeVector();
 
-	int point_start_index = _prop_vector.indexOf(_vertex_ptr) - 1;
+	int point_start_index = _prop_vector.indexOf(_vertex_ptr);
+	PolyQtTableModel* model = q_ptr->getModel();
+	QString data;
 
 	for (int j = 0; j < count; j++)
 	{
 		point_start_index;
 		NcGePoint3d point = gripPoints.at(j);
 
-		double x = point.x,
-			y = point.y,
-			z = point.z;
+		data = QString("%1 %2 %3").arg(point.x).arg(point.y).arg(point.z);
 
-		_prop_vector[j + point_start_index]->setValue(QString("%1 %2 %3").arg(x).arg(y).arg(z));
+		acutPrintf(TEXT("\nSet model data %s"), data.toStdString());
 		
+		_prop_vector[j + point_start_index]->setValue(data);
 
 		//ACHAR val_x[50], val_y[50], val_z[50];
 		//acdbRToS(point.x, -1, 5, val_x);
@@ -351,12 +344,14 @@ bool ObjectQt3DPolyLine::setNanoCadObject(AcDbEntity* pEnt)
 		//acdbRToS(point.z, -1, 5, val_z);
 
 		//acutPrintf(
-		//	TEXT("\nТочка %d : (x = %s, y = %s, z = %s)"),
+		//	TEXT("\nPoint %d : (x = %s, y = %s, z = %s)"),
 		//	j, val_x,
 		//	val_y,
 		//	val_z
 		//);
 	}
+
+	updateTable();
 
 }
 

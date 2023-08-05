@@ -21,6 +21,7 @@ void PolyNcEditorReactor::pickfirstModified()
 	acutPrintf(
 		L"\nvoid PolyNcEditorReactor::pickfirstModified().\n");
 
+
 	// Имя набора
 	ads_name sset; 
 

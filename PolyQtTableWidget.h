@@ -35,6 +35,8 @@ public:
 
   PolyQtTableModel* getModel();
 
+  void updateTable();
+
 
 private slots:
   void showDialog();

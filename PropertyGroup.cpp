@@ -23,20 +23,18 @@ QString PropertyGroup::name()
     return _name;
 }
 
+
 QVariant PropertyGroup::value()
 {
     return _value;
 }
+
 
 bool PropertyGroup::setValue(QVariant /*value*/)
 {
     return false;
 }
 
-bool PropertyGroup::invertColor()
-{
-    return true;
-}
 
 QString PropertyGroup::className()
 {

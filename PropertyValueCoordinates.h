@@ -53,7 +53,9 @@ private:
     QString _name;
 
     QString _value;
-    const QRegExp _reg_exp = QRegExp (R"d((-{0,1}\d+ -{0,1}\d+)|(-{0,1}\d+ -{0,1}\d+ -{0,1}\d+))d");
+    const QRegExp _reg_exp = 
+        QRegExp ("([+-]?([0-9]*[.])?[0-9]+ [+-]?([0-9]*[.])?[0-9]+ [+-]?([0-9]*[.])?[0-9]+)"
+            "|([+-]?([0-9]*[.])?[0-9]+ [+-]?([0-9]*[.])?[0-9]+)");
 };
 
 #endif // PropertyValueCoordinates_H

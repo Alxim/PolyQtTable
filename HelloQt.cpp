@@ -1,21 +1,3 @@
-//
-// Копирайт (С) 2019, ООО «Нанософт разработка». Все права защищены.
-// 
-// Данное программное обеспечение, все исключительные права на него, его
-// документация и сопроводительные материалы принадлежат ООО «Нанософт разработка».
-// Данное программное обеспечение может использоваться при разработке и входить
-// в состав разработанных программных продуктов при соблюдении условий
-// использования, оговоренных в «Лицензионном договоре присоединения
-// на использование программы для ЭВМ «Платформа nanoCAD»».
-// 
-// Данное программное обеспечение защищено в соответствии с законодательством
-// Российской Федерации об интеллектуальной собственности и международными
-// правовыми актами.
-// 
-// Используя данное программное обеспечение,  его документацию и
-// сопроводительные материалы вы соглашаетесь с условиями использования,
-// указанными выше. 
-//
 
 #include "stdafx.h"
 
@@ -74,6 +56,8 @@ END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(polyQtTablePalette, hostQtPalette);
 
+PolyQtTableWidget* pWidgetsClass = nullptr;
+
 void polyQtTablePaletteCmd()
 {
   if (!m_pPalSet)
@@ -91,7 +75,8 @@ void polyQtTablePaletteCmd()
 
     QWidget* pPaletteWidget1 = pPal->paletteWidget();
 
-    PolyQtTableWidget* pWidgetsClass = new PolyQtTableWidget(pPaletteWidget1);
+    if(pWidgetsClass == nullptr)
+		pWidgetsClass = new PolyQtTableWidget(pPaletteWidget1);
 
     QVBoxLayout* vbox = new QVBoxLayout(pPaletteWidget1);
     vbox->setSpacing(0);
@@ -195,4 +180,33 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
   }
 
   return AcRx::kRetOK;
+}
+
+
+// Отладочный метод
+
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
+#include <QTime>
+
+void writeLog(QString str)
+{
+    QFile file("C:/Users/Schel/Downloads/PolyQtTable.log");
+
+    file.open(QFile::ReadWrite);
+
+    QTextStream out(&file);
+
+    out.setCodec("UTF-8");
+    out.seek(file.size());
+    out << "\n" << QTime::currentTime().toString("hh:mm:ss  ") << str;
+
+    file.close();
+}
+
+void updateTable()
+{
+    if (pWidgetsClass != nullptr)
+        pWidgetsClass->updateTable();
 }

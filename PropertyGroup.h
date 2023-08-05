@@ -33,12 +33,6 @@ public:
      */
     bool setValue(QVariant value) override;
 
-    /*!
-     * \brief invertColor необходимо инвертировац цвет фона и шрифта
-     * \return инвентровать надо только для заголовка
-     */
-    bool invertColor() override;
-
 
     /*!
      * \brief className получение имени класса

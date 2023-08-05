@@ -41,20 +41,6 @@ public:
 
 
     /*!
-     * \brief invertColor необходимо инвертировац цвет фона и шрифта
-     * \return инвентровать надо только для заголовка
-     */
-    virtual bool invertColor();
-
-
-    /*!
-     * \brief regExpToValidation - Возвращает регулярное выражение для подстановки в маску ввода и проверки вставки в модель
-     * \return
-     */
-    virtual QRegExp regExpToValidation() const;
-
-
-    /*!
      * \brief className получение имени класса
      * \return строка с именем класса
      */

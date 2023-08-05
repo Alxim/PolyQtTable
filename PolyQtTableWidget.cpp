@@ -62,6 +62,12 @@ PolyQtTableModel* PolyQtTableWidget::getModel()
 	return _model;
 }
 
+void PolyQtTableWidget::updateTable()
+{
+	ui.tableView->selectAll();
+	ui.tableView->clearSelection();
+}
+
 
 void PolyQtTableWidget::setObjectQt()
 {

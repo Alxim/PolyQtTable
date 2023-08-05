@@ -5,6 +5,8 @@
 #include <QModelIndex>
 
 
+void writeLog(QString str);
+
 PropertyValueCoordinates::PropertyValueCoordinates(QString prop_name, QString default_value)
     : _name(prop_name), _value(default_value)
 {
@@ -28,9 +30,11 @@ bool PropertyValueCoordinates::setValue(QVariant value)
 
     ok = _reg_exp.exactMatch(str);
 
-    if ( ! ok)
+    if (!ok)
+    {
+        writeLog("\nError set _prop_vector value " + str);        
         return false;
-
+    }
     if(str.count(" ") == 1)
         str += " 0";
 
