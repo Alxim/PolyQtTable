@@ -7,6 +7,8 @@
 class PropertyAbstact;
 class PolyQtTableWidget;
 class QModelIndex;
+class QTableView;
+
 
 class ObjectQtAbstract : public QObject
 {
@@ -21,7 +23,7 @@ public:
 
     virtual bool mayPasteClipboars(const QModelIndex& index);
 
-    virtual bool pasteClipboars(const QModelIndex& index) = 0;
+    virtual bool pasteClipboars(QTableView* table) = 0;
 
     virtual QVector<PropertyAbstact*>& propVector() = 0;
 

@@ -8,7 +8,7 @@
 class PropertyValueCoordinates : public PropertyAbstact
 {
 public:
-    PropertyValueCoordinates(QString prop_name, QString default_value);
+    PropertyValueCoordinates(QString prop_name, QString default_value = QString());
 
     /*!
      * \brief name - получить имя свойства

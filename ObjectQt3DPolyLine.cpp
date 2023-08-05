@@ -14,6 +14,9 @@
 #include <QClipboard>
 #include <QGuiApplication>
 
+
+
+
 ObjectQt3DPolyLine::ObjectQt3DPolyLine(PolyQtTableWidget* parent)
 	: q_ptr(parent)
 {
@@ -45,12 +48,17 @@ ObjectQt3DPolyLine::ObjectQt3DPolyLine(PolyQtTableWidget* parent)
 
 void ObjectQt3DPolyLine::resizeVector()
 {
+	acutPrintf(TEXT("\nstart resizeVector()"));
+
 	int point_start_index = _prop_vector.indexOf(_vertex_ptr);
 
 	int curr_count = _prop_vector.count(),
 		new_count = _vertex_count->value().toInt() + point_start_index;
 
-
+	acutPrintf(TEXT("\ncurr_count = %d "
+		"\nnew_count = %d"
+	"\n_vertex_count->value().toInt() = %d"
+		"\npoint_start_index = %d"), curr_count, new_count, _vertex_count->value().toInt(), point_start_index);
 	if (curr_count == new_count)
 		return;
 
@@ -58,6 +66,8 @@ void ObjectQt3DPolyLine::resizeVector()
 
 	if (curr_count < new_count)
 	{
+		acutPrintf(TEXT("\nAdd new row in table"));
+
 		for (int i = curr_count; i < new_count; i++)
 		{
 			//double x = cos(3 * i) + i, y = sin(3 * i) + i, z = exp(double(i) / 10);
@@ -76,6 +86,7 @@ void ObjectQt3DPolyLine::resizeVector()
 
 	if (curr_count > new_count)
 	{
+		acutPrintf(TEXT("\nRemove row from table"));
 		while (curr_count != new_count)
 		{
 			_model->removeRows(_model->rowCount() - 1, 1);
@@ -90,33 +101,24 @@ void ObjectQt3DPolyLine::resizeVector()
 
 bool ObjectQt3DPolyLine::create()
 {
-	// Создание 3Д полпелинии
+	// Создание 3Д полелинии
 	NcGePoint3dArray ptArr;
 
 	int point_start_index = _prop_vector.indexOf(_vertex_ptr);
 	int count = _prop_vector.count();
-	ptArr.setLogicalLength(count - point_start_index + 1);
+	ptArr.setLogicalLength(count - point_start_index);
+
+	QString value;
 
 	for (int i = point_start_index; i < count; i++)
-	{
-		double x = cos(3 * i) + i, y = sin (3 * i) + i, z = exp(double(i)/10);
+	{	
+		value = _prop_vector.at(i)->value().toString(); 
 
-		QString value = _prop_vector.at(i)->value().toString();
-		QStringList lst = value.split(" ");
+		Point3D point;
+		if ( ! splitStringToPoint3d(value, point))
+			return false;
 
-		switch (lst.count())
-		{
-		case 3:
-			z = lst.at(2).toDouble();
-		case 2:
-			x = lst.at(0).toDouble();
-			y = lst.at(1).toDouble();
-			break;
-		default:
-			break;
-		}
-
-		ptArr[i - point_start_index].set(x, y, z);
+		ptArr[i - point_start_index].set(point.x, point.y, point.z);
 	}
 
 
@@ -137,12 +139,8 @@ bool ObjectQt3DPolyLine::create()
 
 	NcDbBlockTable* pBlockTable;
 	ncdbHostApplicationServices()->workingDatabase()->getSymbolTable(pBlockTable, NcDb::kForRead);
-
-	//PolyNcEditorReactor* reactor = new PolyNcEditorReactor();
-	NcDbObjectReactor* reactor_obj = new NcDbObjectReactor();
-	
-
 	//  NcDb::kForRead - Замыкать фигуру, если не ставить, то будет разорванная
+
 
 	NcDbBlockTableRecord* pBlockTableRecord;
 	pBlockTable->getAt(ACDB_MODEL_SPACE, pBlockTableRecord, NcDb::kForWrite);
@@ -195,9 +193,9 @@ bool ObjectQt3DPolyLine::mayPasteClipboars(const QModelIndex& index)
 
 //**********************************************************************************************************************99
 
-bool ObjectQt3DPolyLine::pasteClipboars(const QModelIndex& index)
+bool ObjectQt3DPolyLine::pasteClipboars(QTableView* table)
 {
-
+	QModelIndex index = table->currentIndex();
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	QString text = clipboard->text().remove("\r");
 	QStringList lst = text.split("\n");
@@ -209,30 +207,96 @@ bool ObjectQt3DPolyLine::pasteClipboars(const QModelIndex& index)
 		point_count = _vertex_count->value().toInt(),
 		shift = row - point_start_index;
 
+
+	ACHAR t1[50], t2[50], t3[50],
+		t4[50], t5[50], t6[50];
+
+	acdbRToS(point_start_index, -1, 5, t1);
+	acdbRToS(row, -1, 5, t2);
+	acdbRToS(col, -1, 5, t3);
+	acdbRToS(count, -1, 5, t4);
+	acdbRToS(point_count, -1, 5, t5);
+	acdbRToS(shift, -1, 5, t6);
+
+	acutPrintf(
+		TEXT(R"(
+------------------------------------
+
+point_start_index = %s
+row = %s
+col = %s
+count = %s
+point_count = %s
+shift = %s)"),
+		t1, t2, t3, t4, t5, t6
+	);
+
 	//  Попытка вставик в область общих свойств, что излишне
 	if (shift < 0)
 		return false;
 
-	if (count + shift > point_count)
+	if (count == 1)
+		return _prop_vector.at(row)->setValue(text);
+	
+	QList<QModelIndex> indexs;
+	
+
+	acutPrintf(TEXT("\nstart for"));
+	int i = 0;
+	for (; i < count; i++)
 	{
-		_vertex_count->setValue(QString::number(count + shift));
-		//resizeVector();
+		acutPrintf(TEXT("\nfor i = %d"), i);
+		if (shift + i >= point_count)
+		{
+			acutPrintf(TEXT("\nInsert new point %d"), shift + i);
+			
+			Point3D point;
+			if (!splitStringToPoint3d(lst[i], point))
+			{
+				acutPrintf(TEXT("\nError sintax in line: %s"), lst[i]);
+				return false;
+			}
+
+			acutPrintf(TEXT("\nsplit end"));
+
+
+			PolyQtTableModel* model = q_ptr->getModel();
+			QModelIndex index_temp = model->index(_prop_vector.indexOf(_vertex_count), 1);
+			
+			point_count++;
+			acutPrintf(TEXT("\nset value point_count: %d"), point_count);
+			model->setData(index_temp, point_count);
+			qApp->processEvents();
+
+			if (row + i >= _prop_vector.count() )
+			{
+				acutPrintf(TEXT("\nResize Error"));
+				return false;
+			}
+		}
+
+		acutPrintf(TEXT("\nInsert old point %d"), shift + i);
+		if (!_prop_vector.at(row + i)->setValue(lst[i]))
+			return false;
+		indexs << index.sibling(row + i, 1);
+		table->selectionModel()->setCurrentIndex(indexs.last(), QItemSelectionModel::ToggleCurrent);
+		//table->setCurrentIndex(index_select);
 	}
 
-	for (int i = 0; i < count; i++)
-	{
-		index.sibling(row + i, col);
-		//if (_model->flags(index) & Qt::ItemIsEditable)
-		//	_model->setData(index, text);
-	}
-
+	table->selectionModel()->clear();
+	for (auto in : indexs)
+		table->selectionModel()->setCurrentIndex(in, QItemSelectionModel::ToggleCurrent);
+	
+	//table->selectionModel()->selectedIndexes();
+	//table->setSelectionModel();
+	//table->setCurrentIndex(index.sibling(row + i - 1, 1));
+	
 	return true;
 }
 
 
 QVector<PropertyAbstact*>& ObjectQt3DPolyLine::propVector()
 {
-	//return static_cast <const QVector<PropertyAbstact*>> (_prop_vector);
 	return _prop_vector;
 }
 
@@ -263,10 +327,11 @@ bool ObjectQt3DPolyLine::setNanoCadObject(AcDbEntity* pEnt)
 	p_line->getGripPoints(gripPoints, osnapModes, geomIds);
 
 	int count = gripPoints.size();
+
 	_vertex_count->setValue(count);
 	resizeVector();
 
-	int point_start_index = _prop_vector.indexOf(_vertex_ptr);
+	int point_start_index = _prop_vector.indexOf(_vertex_ptr) - 1;
 
 	for (int j = 0; j < count; j++)
 	{
@@ -293,4 +358,31 @@ bool ObjectQt3DPolyLine::setNanoCadObject(AcDbEntity* pEnt)
 		//);
 	}
 
+}
+
+
+bool ObjectQt3DPolyLine::splitStringToPoint3d(QString str, Point3D& point)
+{
+	bool ok;
+	QStringList lst = str.split(" ");
+
+	switch (lst.count())
+	{
+	case 3:
+		point.z = lst.at(2).toDouble(&ok);
+		if (!ok)
+			return false;
+	case 2:
+		point.x = lst.at(0).toDouble(&ok);
+		if (!ok)
+			return false;
+
+		point.y = lst.at(1).toDouble(&ok);
+		if (!ok)
+			return false;
+		break;
+	default:
+		break;
+	}
+	return true;
 }

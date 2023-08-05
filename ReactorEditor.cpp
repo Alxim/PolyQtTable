@@ -81,9 +81,6 @@ void PolyNcEditorReactor::pickfirstModified()
 		printObj(pEnt);
 		std::string str = CT2A( pEnt->isA()->name() ); 
 
-		// Проверяем тип примитива.
-		//  TODO вызов метода обработки примитива и похоже это будет некий отдельный класс адаптер
-
 		ObjectQtAbstract* temp = ObjectQtAbstract::OBJECT_QT_HASH.value(QString::fromStdString(str), nullptr);
 
 		acutPrintf(TEXT("\n OBJECT_QT_HASH.size() = %d "), ObjectQtAbstract::OBJECT_QT_HASH.size());

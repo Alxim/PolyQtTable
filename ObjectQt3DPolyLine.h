@@ -5,6 +5,10 @@
 
 #include "ObjectQtAbstract.h"
 
+struct Point3D
+{
+    double x = 0, y = 0, z = 0;
+};
 
 class PropertyAbstact;
 class PolyQtTableModel;
@@ -24,7 +28,7 @@ public:
 
     bool mayPasteClipboars(const QModelIndex& index) override;
 
-    bool pasteClipboars(const QModelIndex& index) override;
+    bool pasteClipboars(QTableView* table) override;
 
     QVector<PropertyAbstact*>& propVector()  override;
 
@@ -39,8 +43,13 @@ public slots:
 private:
     QVector<PropertyAbstact*> _prop_vector;
     PropertyValueInt* _vertex_count = nullptr;
+    /*!
+     * \brief _vertex_ptr - индекс на первый элемент с координатами
+     */
     PropertyValueCoordinates* _vertex_ptr = nullptr;
     PolyQtTableWidget* q_ptr = nullptr;
 
     const QString _vertex_group_name = "Вершины";
+
+    bool splitStringToPoint3d(QString str, Point3D& point);
 };

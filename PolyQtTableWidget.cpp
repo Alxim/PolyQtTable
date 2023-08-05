@@ -156,7 +156,5 @@ bool PolyQtTableWidget::eventFilter(QObject* obj, QEvent* event)
 
 void PolyQtTableWidget::clipboarsPaste()
 {
-	QModelIndex index = ui.tableView->currentIndex();
-	_object_qt->pasteClipboars(index);
-	ui.tableView->setCurrentIndex(index);
+	_object_qt->pasteClipboars(ui.tableView);
 }
