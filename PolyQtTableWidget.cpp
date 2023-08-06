@@ -103,6 +103,11 @@ void PolyQtTableWidget::on_create_clicked()
 	
 }
 
+void PolyQtTableWidget::on_updateObject_clicked()
+{
+
+}
+
 void PolyQtTableWidget::keyPressEvent(QKeyEvent* pe)
 {
 	switch (pe->key())

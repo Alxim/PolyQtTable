@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 
 #include "hostUI.h"
@@ -7,124 +6,124 @@
 
 extern "C" __declspec(dllexport) bool showDialog(HWND parent)
 {
-  auto win = new QWinWidget(parent);
-  win->showCentered();
+	auto win = new QWinWidget(parent);
+	win->showCentered();
 
-  QMessageBox::about(win, "HelloQt.dll", "Hello, Qt in nanoCAD!");
+	QMessageBox::about(win, "HelloQt.dll", "Hello, Qt in nanoCAD!");
 
-  delete win;
+	delete win;
 
-  return TRUE;
+	return TRUE;
 }
 
-void helloQtModalDlgCmd()
+void QtModalDlgCmd()
 {
-  acutPrintf(L"\nHello, hostQt.dll!\n");
+	acutPrintf(L"\nHello, hostQt.dll!\n");
 
-  showDialog(adsw_acadMainWnd());
+	showDialog(adsw_acadMainWnd());
 }
 
 hostUiPaletteSet* m_pPalSet = NULL;
 
-HINSTANCE _hdllInstance =NULL ;
+HINSTANCE _hdllInstance = NULL;
 AC_IMPLEMENT_EXTENSION_MODULE(theArxDLL);
 
-class polyQtTablePalette : public hostQtPalette
+class QtTablePalette : public hostQtPalette
 {
-  DECLARE_DYNAMIC(polyQtTablePalette)
+	DECLARE_DYNAMIC(QtTablePalette)
 
 public:
-  polyQtTablePalette() {};
+	QtTablePalette() {};
 
-  afx_msg void    OnSize(UINT nType, int cx, int cy)
-  {
-    if (m_pWinWidget)
-    {
-      HWND wnd = (HWND)m_pWinWidget->windowHandle()->winId();
-      ::SetWindowPos(wnd, nullptr, 0, 0, cx, cy*2, SWP_NOZORDER);
-    }
-  }
+	afx_msg void    OnSize(UINT nType, int cx, int cy)
+	{
+		if (m_pWinWidget)
+		{
+			HWND wnd = (HWND)m_pWinWidget->windowHandle()->winId();
+			::SetWindowPos(wnd, nullptr, 0, 0, cx, cy * 2, SWP_NOZORDER);
+		}
+	}
 
-  DECLARE_MESSAGE_MAP();
+	DECLARE_MESSAGE_MAP();
 };
 
-BEGIN_MESSAGE_MAP(polyQtTablePalette, hostQtPalette)
-  //{{AFX_MSG_MAP(polyQtTablePalette)
-  ON_WM_SIZE()
-  //}}AFX_MSG_MAP
+BEGIN_MESSAGE_MAP(QtTablePalette, hostQtPalette)
+	//{{AFX_MSG_MAP(QtTablePalette)
+	ON_WM_SIZE()
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-IMPLEMENT_DYNAMIC(polyQtTablePalette, hostQtPalette);
+IMPLEMENT_DYNAMIC(QtTablePalette, hostQtPalette);
 
 PolyQtTableWidget* pWidgetsClass = nullptr;
 
-void polyQtTablePaletteCmd()
+void QtTablePaletteCmd()
 {
-  if (!m_pPalSet)
-  {
-    CAcModuleResourceOverride ThisRes;
-    m_pPalSet = new hostUiPaletteSet();
-    m_pPalSet->Create(L"Test Qt Palette Set", WS_CHILD | WS_DLGFRAME | WS_VISIBLE, CRect(30, 50, 870, 300),
-      CWnd::FromHandle(adsw_acadMainWnd()), PSS_SNAP | PSS_PROPERTIES_MENU | PSS_AUTO_ROLLUP | PSS_CLOSE_BUTTON);
-    m_pPalSet->EnableDocking(CBRS_ALIGN_ANY);
-    m_pPalSet->RestoreControlBar();
+	if (!m_pPalSet)
+	{
+		CAcModuleResourceOverride ThisRes;
+		m_pPalSet = new hostUiPaletteSet();
+		m_pPalSet->Create(L"Test Qt Palette Set", WS_CHILD | WS_DLGFRAME | WS_VISIBLE, CRect(30, 50, 870, 300),
+			CWnd::FromHandle(adsw_acadMainWnd()), PSS_SNAP | PSS_PROPERTIES_MENU | PSS_AUTO_ROLLUP | PSS_CLOSE_BUTTON);
+		m_pPalSet->EnableDocking(CBRS_ALIGN_ANY);
+		m_pPalSet->RestoreControlBar();
 
-    polyQtTablePalette* pPal = new polyQtTablePalette();
-    pPal->Create(WS_CHILD | WS_VISIBLE, L"Poly Table Qt Palette1", m_pPalSet, 0);
-    m_pPalSet->AddPalette(pPal);
+		QtTablePalette* pPal = new QtTablePalette();
+		pPal->Create(WS_CHILD | WS_VISIBLE, L"Poly Table Qt Palette1", m_pPalSet, 0);
+		m_pPalSet->AddPalette(pPal);
 
-    QWidget* pPaletteWidget1 = pPal->paletteWidget();
+		QWidget* pPaletteWidget1 = pPal->paletteWidget();
 
-    if(pWidgetsClass == nullptr)
-		pWidgetsClass = new PolyQtTableWidget(pPaletteWidget1);
+		if (pWidgetsClass == nullptr)
+			pWidgetsClass = new PolyQtTableWidget(pPaletteWidget1);
 
-    QVBoxLayout* vbox = new QVBoxLayout(pPaletteWidget1);
-    vbox->setSpacing(0);
-    vbox->setMargin(0);
-    vbox->addWidget(pWidgetsClass);
-    vbox->addStretch();
+		QVBoxLayout* vbox = new QVBoxLayout(pPaletteWidget1);
+		vbox->setSpacing(0);
+		vbox->setMargin(0);
+		vbox->addWidget(pWidgetsClass);
+		vbox->addStretch();
 
-    //WId winId = le3->winId(); // Make Qt windows real HWND windows
+		//WId winId = le3->winId(); // Make Qt windows real HWND windows
 
-    pPaletteWidget1->setLayout(vbox);
-    pPaletteWidget1->show();
+		pPaletteWidget1->setLayout(vbox);
+		pPaletteWidget1->show();
 
-    CRect cr;
-    m_pPalSet->GetClientRect(&cr);
-    pPal->OnSize(0, cr.Width(), cr.Height()); // Force to resize palette widget, needed when system scale !=100%
+		CRect cr;
+		m_pPalSet->GetClientRect(&cr);
+		pPal->OnSize(0, cr.Width(), cr.Height()); // Force to resize palette widget, needed when system scale !=100%
 
-    m_pPalSet->Show(!m_pPalSet->IsWindowVisible());
-  }
-  else
-  {
-    m_pPalSet->Show(!m_pPalSet->IsWindowVisible());
-  }
+		m_pPalSet->Show(!m_pPalSet->IsWindowVisible());
+	}
+	else
+	{
+		m_pPalSet->Show(!m_pPalSet->IsWindowVisible());
+	}
 }
 
 void initApp()
 {
-  acedRegCmds->addCommand(L"HELLOQT_GROUP",
-                          L"_HELLOQTMODALDLG",
-                          L"HELLOQTMODALDLG",
-                          ACRX_CMD_TRANSPARENT,
-                          helloQtModalDlgCmd);
+	acedRegCmds->addCommand(L"QT_GROUP",
+		L"_QTMODALDLG",
+		L"QTMODALDLG",
+		ACRX_CMD_TRANSPARENT,
+		QtModalDlgCmd);
 
-  acedRegCmds->addCommand(L"HELLOQT_GROUP",
-                          L"_polyQtTablePalette",
-                          L"polyQtTablePalette",
-                          ACRX_CMD_TRANSPARENT,
-                          polyQtTablePaletteCmd);
+	acedRegCmds->addCommand(L"QT_GROUP",
+		L"_QtTablePalette",
+		L"QtTablePalette",
+		ACRX_CMD_TRANSPARENT,
+		QtTablePaletteCmd);
 }
 
 void uninitApp()
 {
-  acedRegCmds->removeGroup(L"HELLOQT_GROUP");
+	acedRegCmds->removeGroup(L"QT_GROUP");
 
-  if (m_pPalSet)
-  {
-    m_pPalSet->DestroyWindow();
-    m_pPalSet = 0;
-  }
+	if (m_pPalSet)
+	{
+		m_pPalSet->DestroyWindow();
+		m_pPalSet = 0;
+	}
 }
 
 
@@ -136,50 +135,38 @@ void createNcEditorReactor();
 void clearNcEditorReactor();
 
 extern "C" __declspec(dllexport) AcRx::AppRetCode
-acrxEntryPoint(AcRx::AppMsgCode msg, void* appId) 
+acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
 {
-  switch (msg) 
-  {
-  case AcRx::kInitAppMsg:
-      //  Действия при установке плагина
+	switch (msg)
+	{
+	case AcRx::kInitAppMsg:
+		//  Действия при установке плагина
 
-    acrxDynamicLinker->unlockApplication(appId);
-    acrxDynamicLinker->registerAppMDIAware(appId);
-    initApp();
-    //watchDb();    
-    createNcEditorReactor();
+		acrxDynamicLinker->unlockApplication(appId);
+		acrxDynamicLinker->registerAppMDIAware(appId);
+		initApp();
+		//watchDb();
 
-    //  Пример добавленрия реактора
+		//  Создание рекатора
+		createNcEditorReactor();
 
-    //acrxDynamicLinker->unlockApplication(appId);
-    //acrxDynamicLinker->registerAppNotMDIAware(appId);
-    //acedRegCmds->addCommand("ASDK_NOTIFY_TEST",
-    //    "ASDK_WATCH",
-    //    "WATCH",
-    //    ACRX_CMD_TRANSPARENT,
-    //    watchDb);
-    //acedRegCmds->addCommand("ASDK_NOTIFY_TEST",
-    //    "ASDK_CLEAR",
-    //    "CLEAR",
-    //    ACRX_CMD_TRANSPARENT,
-    //    clearReactors);
-    break;
+		break;
 
-  case AcRx::kUnloadAppMsg:
-      // Действия при выгрузке плагина
-    uninitApp();
+	case AcRx::kUnloadAppMsg:
+		// Действия при выгрузке плагина
+		uninitApp();
 
-    //  Пример удаления реактора
+		//  Пример удаления реактора
 
-    //clearReactors();
-    clearNcEditorReactor();
+		//clearReactors();
+		clearNcEditorReactor();
 
 
-    //acedRegCmds->removeGroup("ASDK_NOTIFY_TEST");
-    break;
-  }
+		//acedRegCmds->removeGroup("ASDK_NOTIFY_TEST");
+		break;
+	}
 
-  return AcRx::kRetOK;
+	return AcRx::kRetOK;
 }
 
 
@@ -192,21 +179,21 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
 
 void writeLog(QString str)
 {
-    QFile file("C:/Users/Schel/Downloads/PolyQtTable.log");
+	QFile file("C:/Users/Schel/Downloads/PolyQtTable.log");
 
-    file.open(QFile::ReadWrite);
+	file.open(QFile::ReadWrite);
 
-    QTextStream out(&file);
+	QTextStream out(&file);
 
-    out.setCodec("UTF-8");
-    out.seek(file.size());
-    out << "\n" << QTime::currentTime().toString("hh:mm:ss  ") << str;
+	out.setCodec("UTF-8");
+	out.seek(file.size());
+	out << "\n" << QTime::currentTime().toString("hh:mm:ss  ") << str;
 
-    file.close();
+	file.close();
 }
 
 void updateTable()
 {
-    if (pWidgetsClass != nullptr)
-        pWidgetsClass->updateTable();
+	if (pWidgetsClass != nullptr)
+		pWidgetsClass->updateTable();
 }

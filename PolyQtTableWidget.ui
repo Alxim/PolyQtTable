@@ -16,18 +16,29 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="0">
-      <widget class="QPushButton" name="create">
-       <property name="text">
-        <string>Создать</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QComboBox" name="comboBox"/>
      </item>
      <item row="1" column="0">
       <widget class="QTableView" name="tableView"/>
+     </item>
+     <item row="2" column="0">
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="updateObject">
+         <property name="text">
+          <string>Обновить</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="create">
+         <property name="text">
+          <string>Создать</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

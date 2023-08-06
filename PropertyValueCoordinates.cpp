@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "PropertyValueCoordinates.h"
-#include <QDebug>
 #include <QRegExpValidator>
 #include <QModelIndex>
 
