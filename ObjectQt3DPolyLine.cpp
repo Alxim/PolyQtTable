@@ -55,10 +55,11 @@ void ObjectQt3DPolyLine::resizeVector()
 	int curr_count = _prop_vector.count(),
 		new_count = _vertex_count->value().toInt() + point_start_index;
 
-	acutPrintf(TEXT("\ncurr_count = %d "
-		"\nnew_count = %d"
-	"\n_vertex_count->value().toInt() = %d"
-		"\npoint_start_index = %d"), curr_count, new_count, _vertex_count->value().toInt(), point_start_index);
+	//acutPrintf(TEXT("\ncurr_count = %d "
+	//	"\nnew_count = %d"
+	//"\n_vertex_count->value().toInt() = %d"
+	//	"\npoint_start_index = %d"), curr_count, new_count, _vertex_count->value().toInt(), point_start_index);
+
 	if (curr_count == new_count)
 		return;
 
@@ -208,28 +209,28 @@ bool ObjectQt3DPolyLine::pasteClipboars(QTableView* table)
 		shift = row - point_start_index;
 
 
-	ACHAR t1[50], t2[50], t3[50],
-		t4[50], t5[50], t6[50];
-
-	acdbRToS(point_start_index, -1, 5, t1);
-	acdbRToS(row, -1, 5, t2);
-	acdbRToS(col, -1, 5, t3);
-	acdbRToS(count, -1, 5, t4);
-	acdbRToS(point_count, -1, 5, t5);
-	acdbRToS(shift, -1, 5, t6);
-
-	acutPrintf(
-		TEXT(R"(
-------------------------------------
-
-point_start_index = %s
-row = %s
-col = %s
-count = %s
-point_count = %s
-shift = %s)"),
-		t1, t2, t3, t4, t5, t6
-	);
+//	ACHAR t1[50], t2[50], t3[50],
+//		t4[50], t5[50], t6[50];
+//
+//	acdbRToS(point_start_index, -1, 5, t1);
+//	acdbRToS(row, -1, 5, t2);
+//	acdbRToS(col, -1, 5, t3);
+//	acdbRToS(count, -1, 5, t4);
+//	acdbRToS(point_count, -1, 5, t5);
+//	acdbRToS(shift, -1, 5, t6);
+//
+//	acutPrintf(
+//		TEXT(R"(
+//------------------------------------
+//
+//point_start_index = %s
+//row = %s
+//col = %s
+//count = %s
+//point_count = %s
+//shift = %s)"),
+//		t1, t2, t3, t4, t5, t6
+//	);
 
 	//  Попытка вставик в область общих свойств, что излишне
 	if (shift < 0)
@@ -273,6 +274,9 @@ shift = %s)"),
 				return false;
 			}
 		}
+
+		AcDbDatabase* pDb = acdbHostApplicationServices()->workingDatabase();
+		AcAxDocLock lockDoc(pDb);
 
 		acutPrintf(TEXT("\nInsert old point %d"), shift + i);
 		if (!_prop_vector.at(row + i)->setValue(lst[i]))
@@ -352,9 +356,194 @@ bool ObjectQt3DPolyLine::setNanoCadObject(AcDbEntity* pEnt)
 	}
 
 	updateTable();
-
 }
 
+
+bool ObjectQt3DPolyLine::update(AcDbEntity* pEnt)
+{
+	acutPrintf(TEXT("Start update"));
+
+	if (pEnt == nullptr)
+	{
+		acutPrintf(TEXT("pEnt == nullptr"));
+		return false;
+	}
+
+	if (pEnt == NULL)
+	{
+		acutPrintf(TEXT("pEnt == NULL"));
+		return false;
+	}
+
+	std::string str = CT2A(pEnt->isA()->name());
+
+
+	// Проверяем тип примитива
+	if (str != "AcDb3dPolyline")
+		return false;
+
+
+	AcDb3dPolyline* p_line = static_cast <AcDb3dPolyline*> (pEnt);
+
+	NcGePoint3dArray gripPoints;
+	NcDbIntArray osnapModes;
+	NcDbIntArray geomIds;
+
+	NcDbGripDataPtrArray arra;
+	NcGeVector3d vec;
+	vec.x = 4;
+
+	p_line->getGripPoints(gripPoints, osnapModes, geomIds);
+	//  p_line->getGripPoints(arra, 5, 5, vec, true);
+
+	//  NcDbObjectIterator* iter = p_line->vertexIterator();
+
+
+	//  polygon mesh constructor without any parameter
+	NcDbPolygonMesh* pMesh = new NcDbPolygonMesh();
+	pMesh->setMSize(1);
+	pMesh->setNSize(4);
+	pMesh->makeMClosed();
+	pMesh->makeNClosed();
+
+	NcDbVoidPtrArray arr;
+	arr.append(pMesh);
+
+
+	NcDbBlockTable* pBlockTable;
+	ncdbHostApplicationServices()->workingDatabase()->getSymbolTable(pBlockTable, NcDb::kForRead);
+	//  NcDb::kForRead - Замыкать фигуру, если не ставить, то будет разорванная
+
+
+	NcDbBlockTableRecord* pBlockTableRecord;
+	pBlockTable->getAt(ACDB_MODEL_SPACE, pBlockTableRecord, NcDb::kForWrite);
+	pBlockTable->close();
+
+
+	NcDbObjectId plineObjId;
+	pBlockTableRecord->appendAcDbEntity(plineObjId, p_line);
+
+
+	NcDbObjectIterator* pVertIter = p_line->vertexIterator();
+	NcDb3dPolylineVertex* pVertex;
+	NcGePoint3d location;
+	NcDbObjectId vertexObjId;
+
+	for (int vertexNumber = 0; !pVertIter->done();
+		vertexNumber++, pVertIter->step())
+	{
+		vertexObjId = pVertIter->objectId();
+		ncdbOpenObject(pVertex, vertexObjId,
+			NcDb::kForRead);
+		location = pVertex->position();
+
+		//location.set(location.x + 1000, location.y + 1000, location.z + 1000);
+
+		pVertex->setPosition(location);
+
+		pVertex->close();
+		//NcDbPolygonMeshVertex* polyVertex = new NcDbPolygonMeshVertex(pVertex->position());
+		//pMesh->appendVertex(polyVertex);
+		//polyVertex->close();
+	}
+	delete pVertIter;
+
+
+	pBlockTableRecord->appendAcDbEntity(pMesh);
+	pBlockTableRecord->close();
+	p_line->close();
+	pMesh->close();
+
+	// p_line->setAttributes(NcGiDrawableTraits)
+	
+	int count = gripPoints.size();
+
+	//_vertex_count->setValue(count);
+	//resizeVector();
+
+	//int point_start_index = _prop_vector.indexOf(_vertex_ptr);
+	//PolyQtTableModel* model = q_ptr->getModel();
+	//QString data;
+
+	//for (int j = 0; j < count; j++)
+	//{
+	//	point_start_index;
+	//	NcGePoint3d point = gripPoints.at(j);
+	//	point.x = point.x + 1000;
+	//	point.y = point.y + 1000;
+	//	point.z = point.z + 1000;
+
+	//	gripPoints.insertAt(j, point);
+	//}
+
+	//NcDb3dPolylineVertex* vet = new NcDb3dPolylineVertex();
+
+
+	// p_line->appendVertex(vet);  //appendVertex()
+	//(gripPoints);
+
+	//AcDbObjectPointer<AcDbXrecord> pLyrFltr(p_line->objectId(), AcDb::kForWrite);
+
+	//if (Acad::eOk == pLyrFltr.openStatus())
+	//{
+	//	pLyrFltr->erase();
+	//}
+
+	//delNanoObject(p_line->objectId());
+	//p_line->erase();
+	//p_line->close();
+	//delete p_line;
+	//p_line->upgradeOpen();
+
+	//NcDbBlockTable* pBlockTable;
+	//ncdbHostApplicationServices()->workingDatabase()->getSymbolTable(pBlockTable, NcDb::kForRead);
+	////  NcDb::kForRead - Замыкать фигуру, если не ставить, то будет разорванная
+
+
+	//NcDbBlockTableRecord* pBlockTableRecord;
+	//pBlockTable->getAt(ACDB_MODEL_SPACE, pBlockTableRecord, NcDb::kForWrite);
+	//pBlockTable->close();
+
+	//NcDbObjectId plineObjId;
+	//pBlockTableRecord->upgradeOpen();
+
+	//pBlockTableRecord->close();
+	//p_line->close();
+
+	acutPrintf(TEXT("End update"));
+
+	updateTable();
+}
+
+
+void ObjectQt3DPolyLine::delNanoObject(NcDbObjectId objId)
+{
+	//Get the layer table of the current graphic
+	AcDbLayerTable* pLayerTbl;
+	acdbHostApplicationServices()
+		->workingDatabase()
+		->getLayerTable(pLayerTbl, AcDb::kForRead);
+
+	//pLayerTbl->has(
+
+	//Determine whether it contains the layer table record of the specified name
+	if (!pLayerTbl->has(objId)) {
+		pLayerTbl->close();
+		return;
+	}
+	//Get the pointer of the specified layer table record
+	AcDbLayerTableRecord* pLayerTblRcd;
+	NCHAR* name;
+	pLayerTbl->getAt(name, objId, AcDb::kForWrite);
+	//(objId, pLayerTblRcd, AcDb::kForWrite);
+	//Set a "delete" mark for it
+
+	
+
+	pLayerTblRcd->erase();
+	pLayerTblRcd->close();		//Close the layer table
+	pLayerTbl->close();
+}
 
 bool ObjectQt3DPolyLine::splitStringToPoint3d(QString str, Point3D& point)
 {

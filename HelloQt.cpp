@@ -4,6 +4,8 @@
 #include "hostQt.h"
 #include "PolyQtTableWidget.h"
 
+PolyQtTableWidget* TABLE_W = nullptr;
+
 extern "C" __declspec(dllexport) bool showDialog(HWND parent)
 {
 	auto win = new QWinWidget(parent);
@@ -55,7 +57,6 @@ END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(QtTablePalette, hostQtPalette);
 
-PolyQtTableWidget* pWidgetsClass = nullptr;
 
 void QtTablePaletteCmd()
 {
@@ -74,13 +75,13 @@ void QtTablePaletteCmd()
 
 		QWidget* pPaletteWidget1 = pPal->paletteWidget();
 
-		if (pWidgetsClass == nullptr)
-			pWidgetsClass = new PolyQtTableWidget(pPaletteWidget1);
+		if (TABLE_W == nullptr)
+			TABLE_W = new PolyQtTableWidget(pPaletteWidget1);
 
 		QVBoxLayout* vbox = new QVBoxLayout(pPaletteWidget1);
 		vbox->setSpacing(0);
 		vbox->setMargin(0);
-		vbox->addWidget(pWidgetsClass);
+		vbox->addWidget(TABLE_W);
 		vbox->addStretch();
 
 		//WId winId = le3->winId(); // Make Qt windows real HWND windows
@@ -93,11 +94,10 @@ void QtTablePaletteCmd()
 		pPal->OnSize(0, cr.Width(), cr.Height()); // Force to resize palette widget, needed when system scale !=100%
 
 		m_pPalSet->Show(!m_pPalSet->IsWindowVisible());
+		return;
 	}
-	else
-	{
-		m_pPalSet->Show(!m_pPalSet->IsWindowVisible());
-	}
+
+	m_pPalSet->Show(!m_pPalSet->IsWindowVisible());	
 }
 
 void initApp()
@@ -131,8 +131,6 @@ void clearReactors();
 void watchDb();
 
 
-void createNcEditorReactor();
-void clearNcEditorReactor();
 
 extern "C" __declspec(dllexport) AcRx::AppRetCode
 acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
@@ -146,10 +144,7 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
 		acrxDynamicLinker->registerAppMDIAware(appId);
 		initApp();
 		//watchDb();
-
-		//  Создание рекатора
-		createNcEditorReactor();
-
+		QtTablePaletteCmd();
 		break;
 
 	case AcRx::kUnloadAppMsg:
@@ -157,11 +152,7 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
 		uninitApp();
 
 		//  Пример удаления реактора
-
 		//clearReactors();
-		clearNcEditorReactor();
-
-
 		//acedRegCmds->removeGroup("ASDK_NOTIFY_TEST");
 		break;
 	}
@@ -194,6 +185,6 @@ void writeLog(QString str)
 
 void updateTable()
 {
-	if (pWidgetsClass != nullptr)
-		pWidgetsClass->updateTable();
+	if (TABLE_W != nullptr)
+		TABLE_W->updateTable();
 }

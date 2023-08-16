@@ -30,6 +30,10 @@ public:
     virtual bool removeRows(int row, int count, const QModelIndex& index) = 0;
 
     virtual bool setNanoCadObject(AcDbEntity* obj) = 0;
+
+    virtual bool update(AcDbEntity* pEnt) = 0;
+
+    virtual void delNanoObject(NcDbObjectId objId) = 0;
 };
 
 

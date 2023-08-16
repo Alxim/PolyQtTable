@@ -4,10 +4,12 @@
 #include "hostQt.h"
 #include "nc2ac.h"
 #include "objptr.h"
-#include "ObjectQtAbstract.h"
+#include "PolyQtTableWidget.h"
 #include <QHash>
 
 void printObj(const AcDbObject* pObj);
+
+extern PolyQtTableWidget* TABLE_W;
 
 class PolyNcEditorReactor :
 	public NcEditorReactor
@@ -79,24 +81,12 @@ void PolyNcEditorReactor::pickfirstModified()
 			continue;
 		}
 
-		printObj(pEnt);
-		std::string str = CT2A( pEnt->isA()->name() ); 
-
-		ObjectQtAbstract* temp = ObjectQtAbstract::OBJECT_QT_HASH.value(QString::fromStdString(str), nullptr);
-
-		acutPrintf(TEXT("\n OBJECT_QT_HASH.size() = %d "), ObjectQtAbstract::OBJECT_QT_HASH.size());
-		acutPrintf(TEXT("\n %s - str "), str);
-		acutPrintf(TEXT("\n %s - OBJECT_QT_HASH.keys "), ObjectQtAbstract::OBJECT_QT_HASH.keys().join(", ").toStdString());
-
-		if (temp != nullptr)
+		if (TABLE_W != nullptr)
 		{
 			acutPrintf(TEXT("\n temp != nullptr"));
-			if (temp->setNanoCadObject(pEnt))
+
+			if (TABLE_W->setNanoCadObject(pEnt))
 				return;
-		}
-		else
-		{
-			acutPrintf(TEXT("\n temp == nullptr \n %d "), ObjectQtAbstract::OBJECT_QT_HASH.size() );
 		}
 
 		delete pEnt;

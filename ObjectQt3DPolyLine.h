@@ -16,6 +16,7 @@ class PropertyValueInt;
 class PropertyGroup;
 class PropertyValueCoordinates;
 class AcDbEntity;
+class NcDbObjectId;
 
 class ObjectQt3DPolyLine : public ObjectQtAbstract
 {
@@ -36,6 +37,11 @@ public:
 
     bool setNanoCadObject(AcDbEntity* pEnt) override;
 
+    bool update(AcDbEntity* pEnt) override;
+    
+    void delNanoObject(NcDbObjectId objId) override;
+
+
 public slots:
     void resizeVector();
 
@@ -52,4 +58,5 @@ private:
     const QString _vertex_group_name = "Вершины";
 
     bool splitStringToPoint3d(QString str, Point3D& point);
+    
 };

@@ -1,22 +1,3 @@
-//
-// Копирайт (С) 2019, ООО «Нанософт разработка». Все права защищены.
-// 
-// Данное программное обеспечение, все исключительные права на него, его
-// документация и сопроводительные материалы принадлежат ООО «Нанософт разработка».
-// Данное программное обеспечение может использоваться при разработке и входить
-// в состав разработанных программных продуктов при соблюдении условий
-// использования, оговоренных в «Лицензионном договоре присоединения
-// на использование программы для ЭВМ «Платформа nanoCAD»».
-// 
-// Данное программное обеспечение защищено в соответствии с законодательством
-// Российской Федерации об интеллектуальной собственности и международными
-// правовыми актами.
-// 
-// Используя данное программное обеспечение,  его документацию и
-// сопроводительные материалы вы соглашаетесь с условиями использования,
-// указанными выше. 
-//
-
 #include "stdafx.h"
 #include "ObjectQt3DPolyLine.h"
 #include "PolyQtTableDelegat.h"
@@ -27,6 +8,10 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QMenu>
+
+
+void createNcEditorReactor();
+void clearNcEditorReactor();
 
 PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 	: QWidget(parent)
@@ -49,13 +34,18 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 
 	ui.tableView->installEventFilter(this);
 
+	ui.updateObject->hide();
+
 	//  Установка контекстного меню
 	ui.tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui.tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(customMenu(QPoint)));
 }
 
 PolyQtTableWidget::~PolyQtTableWidget()
-{}
+{
+	acutPrintf(TEXT("\n~PolyQtTableWidget() - clearNcEditorReactor"));
+//	clearNcEditorReactor();
+}
 
 PolyQtTableModel* PolyQtTableWidget::getModel()
 {
@@ -66,6 +56,30 @@ void PolyQtTableWidget::updateTable()
 {
 	ui.tableView->selectAll();
 	ui.tableView->clearSelection();
+}
+
+bool PolyQtTableWidget::setNanoCadObject(AcDbEntity* pEnt)
+{
+	std::string str = CT2A(pEnt->isA()->name());
+
+	ObjectQtAbstract* temp = ObjectQtAbstract::OBJECT_QT_HASH.value(QString::fromStdString(str), nullptr);
+
+	if (temp != nullptr)
+	{
+		acutPrintf(TEXT("\n temp != nullptr"));
+
+		if (temp->setNanoCadObject(pEnt))
+		{
+			ui.updateObject->show();
+			_nano_ent = pEnt;
+			return true;
+		}		
+	}
+
+	acutPrintf(TEXT("\n temp == nullptr \n %d "), ObjectQtAbstract::OBJECT_QT_HASH.size());
+	ui.updateObject->hide();
+
+	return false;
 }
 
 
@@ -92,10 +106,7 @@ void PolyQtTableWidget::customMenu(QPoint pos)
 
 void PolyQtTableWidget::showDialog()
 {
-	qDebug() << "Test print";
 	_object_qt->create();
-
-	acutPrintf(L"\nCreate 3Dpolyline\n");
 }
 
 void PolyQtTableWidget::on_create_clicked()
@@ -105,8 +116,15 @@ void PolyQtTableWidget::on_create_clicked()
 
 void PolyQtTableWidget::on_updateObject_clicked()
 {
-
+	_object_qt->update(_nano_ent);
 }
+
+
+void PolyQtTableWidget::on_deleteObject_clicked()
+{
+	_object_qt->delNanoObject(_nano_ent->objectId());
+}
+
 
 void PolyQtTableWidget::keyPressEvent(QKeyEvent* pe)
 {
@@ -162,6 +180,24 @@ bool PolyQtTableWidget::eventFilter(QObject* obj, QEvent* event)
 	}
 
     return false;
+}
+
+void PolyQtTableWidget::showEvent(QShowEvent* event)
+{
+	acutPrintf(TEXT("\nshowEvent - createNcEditorReactor"));
+	createNcEditorReactor();
+}
+
+void PolyQtTableWidget::hideEvent(QHideEvent* event)
+{
+	acutPrintf(TEXT("\nhideEvent - clearNcEditorReactor"));
+	clearNcEditorReactor();
+}
+
+void PolyQtTableWidget::closeEvent(QCloseEvent* event)
+{
+	acutPrintf(TEXT("\ncloseEvent - clearNcEditorReactor"));
+	clearNcEditorReactor();
 }
 
 
