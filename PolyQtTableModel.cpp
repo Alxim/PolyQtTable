@@ -116,9 +116,6 @@ bool PolyQtTableModel::removeRows(int row, int count, const QModelIndex& index)
 
     _object_qt->removeRows(row, count, index);
 
-    //for (int _row = 0; _row < count; _row++)
-    //    _prop_vector->removeAt(row);
-
     endRemoveRows();
     return true;
 }

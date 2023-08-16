@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="HelloQt.cpp" />
+    <ClCompile Include="ReactorDb.cpp" />
+    <ClCompile Include="ReactorEditor.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_ObjectQt3DPolyLine.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_ObjectQtAbstract.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableDelegat.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableModel.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PolyQtTableWidget.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyAbstact.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyGroup.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueCoordinates.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueDouble.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\trash-x64\PolyQtTable\Debug NCAD\moc_PropertyValueInt.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyAbstact.cpp">
+      <Filter>Table\TableProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGroup.cpp">
+      <Filter>Table\TableProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyValueCoordinates.cpp">
+      <Filter>Table\TableProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyValueDouble.cpp">
+      <Filter>Table\TableProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyValueInt.cpp">
+      <Filter>Table\TableProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="PolyQtTableDelegat.cpp">
+      <Filter>Table</Filter>
+    </ClCompile>
+    <ClCompile Include="PolyQtTableModel.cpp">
+      <Filter>Table</Filter>
+    </ClCompile>
+    <ClCompile Include="PolyQtTableWidget.cpp">
+      <Filter>Table</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectQt3DPolyLine.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectQtAbstract.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="PropertyAbstact.h">
+      <Filter>Table\TableProperty</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PropertyGroup.h">
+      <Filter>Table\TableProperty</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PropertyValueCoordinates.h">
+      <Filter>Table\TableProperty</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PropertyValueDouble.h">
+      <Filter>Table\TableProperty</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PropertyValueInt.h">
+      <Filter>Table\TableProperty</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PolyQtTableDelegat.h">
+      <Filter>Table</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PolyQtTableModel.h">
+      <Filter>Table</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PolyQtTableWidget.h">
+      <Filter>Table</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PolyQtTableWidget.ui">
+      <Filter>Table</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ObjectQt3DPolyLine.h">
+      <Filter>Objects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ObjectQtAbstract.h">
+      <Filter>Objects</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="moc">
+      <UniqueIdentifier>{e6220468-863c-4abc-9c0f-141b6b34b0e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Table">
+      <UniqueIdentifier>{f5b51b87-e833-4f78-b168-0646a61667d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Table\TableProperty">
+      <UniqueIdentifier>{57927bfc-9ea1-408b-8186-77409e2d6fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{86072f62-db23-4fcb-b065-37d1a1da94d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

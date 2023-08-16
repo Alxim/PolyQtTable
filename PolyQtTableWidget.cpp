@@ -43,8 +43,6 @@ PolyQtTableWidget::PolyQtTableWidget(QWidget* parent)
 
 PolyQtTableWidget::~PolyQtTableWidget()
 {
-	acutPrintf(TEXT("\n~PolyQtTableWidget() - clearNcEditorReactor"));
-//	clearNcEditorReactor();
 }
 
 PolyQtTableModel* PolyQtTableWidget::getModel()

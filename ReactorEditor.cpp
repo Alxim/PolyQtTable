@@ -28,7 +28,6 @@ void PolyNcEditorReactor::pickfirstModified()
 	ads_name sset; 
 
 	ads_name ename; // Имя для элемента набора
-	// AcDbObjectId entId;  // Идентификатор объекта
 
 	// Выбрать все выделенные объекты в базе данных графа
 	acedSSGet(TEXT("_I"), NULL, NULL, NULL, sset);
